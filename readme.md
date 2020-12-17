@@ -26,3 +26,8 @@ Other linux distributions *may* work.
 ## Hardware
 
 - **Display:** 300x500 or larger
+- **Input:** Mouse, keyboard, touch or stylus.
+
+<!--
+    Colours: https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=4E5D94&secondary.color=ff5014
+-->

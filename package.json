@@ -17,5 +17,6 @@
   "bugs": {
     "url": "https://github.com/MMK21Hub/MMK21Hub.github.io/issues"
   },
-  "homepage": "https://github.com/MMK21Hub/MMK21Hub.github.io#readme"
+  "homepage": "https://github.com/MMK21Hub/MMK21Hub.github.io#readme",
+  "dependencies": {}
 }

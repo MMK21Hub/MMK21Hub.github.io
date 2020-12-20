@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "watch": true,
-        "target": "ES3"
+        "target": "ES3",
+        "module": "None"
     }
 }

@@ -34,12 +34,12 @@ interface embed{
     // Embeds are not supported yet
 }
 
-export interface reaction {
+interface reaction {
     emoji: emoji;
     count: number;
 }
 
-export interface emoji {
+interface emoji {
     id:         null;
     name:       string;
     isAnimated: boolean;

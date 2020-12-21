@@ -15,7 +15,7 @@
     rel="stylesheet">
   <style>
     :root {
-      --mdc-theme-primary: 4E5D94;
+      --mdc-theme-primary: #4E5D94;
     }
 
     main {
@@ -28,29 +28,47 @@
       height: 100%;
     }
 
-    #app {
+    #inner-box {
       display: grid;
       grid-template-columns: 240px auto;
       background-color: #121212;
       height: 100%;
-      top: 0;
+      width: 100%;
+      margin: auto;
+      box-sizing: border-box;
+      border: var(--mdc-theme-primary) solid 5px;
+      border-top: var(--mdc-theme-primary) solid 10px;
     }
 
-    .primary-box {
-      background-color: #121212;
-
+    #app {
       color: white;
+      height: inherit;
+      max-height: 100%;
+      background-color: #ee4d4d;
+      box-sizing: border-box;
+      display: grid;
+      overflow-y: hidden;
+    }
+
+    #left-menu {
+      background-color: #313131;
+    }
+
+    .primary-box{
+      padding: 8px;
     }
   </style>
 </head>
 
 <body>
   <div id="app">
-    <div class="primary-box">
-      www
-    </div>
-    <div class="primary-box">
-      oo
+    <div id="inner-box">
+      <div class="primary-box" id="left-menu">
+        No content
+      </div>
+      <div class="primary-box">
+        
+      </div>
     </div>
   </div>
   <script src="index.js"></script>

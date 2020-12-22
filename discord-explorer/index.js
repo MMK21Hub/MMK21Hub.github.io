@@ -66,6 +66,7 @@ function loadFile(filePath) {
 // Parse each message
 function renderContent(messages) {
     var chatlog = document.getElementById("chatlog");
+    chatlog.innerHTML = "";
     messages.forEach(function (currentMsg) {
         var messageCard = document.createElement("div"); // Prepare the new msg card
         messageCard.setAttribute("class", "message-card");

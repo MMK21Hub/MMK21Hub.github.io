@@ -118,6 +118,7 @@ function loadFile(filePath) { // https://stackoverflow.com/a/41133213/11519302
 // Parse each message
 function renderContent(messages) {
     let chatlog = document.getElementById("chatlog")
+    chatlog.innerHTML = ""
     messages.forEach((currentMsg) => {
         let messageCard = document.createElement("div") // Prepare the new msg card
         messageCard.setAttribute("class", "message-card")

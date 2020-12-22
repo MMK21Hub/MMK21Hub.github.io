@@ -31,7 +31,7 @@
     #inner-box {
       display: grid;
       grid-template-columns: 240px auto;
-      background-color: #121212;
+      background-color: #36393f;
       height: 100%;
       width: 100%;
       margin: auto;
@@ -51,23 +51,49 @@
     }
 
     #left-menu {
-      background-color: #313131;
+      background-color: #2f3136;
     }
 
     .primary-box{
       padding: 8px;
     }
+
+    .card-view .message-card{
+      background-color: #51565F;
+      padding-left: 72px;
+      padding-top: .125rem;
+      padding-bottom: .125rem;
+      padding-right: 48px;
+      margin: 10px 0px;
+      box-shadow: rgba(0, 0, 0, 0.12) 2px 2px 3px 2px;
+    }
+
+    .discord-view .message-card{
+      background-color: #36393f;
+      padding-left: 72px;
+      padding-top: .125rem;
+      padding-bottom: .125rem;
+      padding-right: 48px;
+      margin: 10px 0px;
+    }
+
+    #chatlog {
+      padding: 5px;
+      padding-right: 75px;
+    }
   </style>
 </head>
 
-<body>
+<body class="discord-view">
   <div id="app">
     <div id="inner-box">
       <div class="primary-box" id="left-menu">
         No content
       </div>
       <div class="primary-box">
-        
+        <div id="chatlog">
+          
+        </div>
       </div>
     </div>
   </div>

@@ -338,16 +338,18 @@ function loadFile(filePath) {
 function renderContent(messages) {
     var chatlog = document.getElementById("chatlog");
     chatlog.innerHTML = ""; // Reset the chatlog before rendering the new messages
+    var chunkedMessages = [];
     if (messages.length >= 100) { // Split the array into chunks if it's big
         // Split the array into chunks if it's big
         var chunks = Math.ceil(messages.length / 100);
-        var chunkedMessages = [];
         var i;
         for (i = 0; i < chunks; i++) {
             chunkedMessages.push(messages.slice(i * 100, (i * 100) + 100));
         }
         console.log("Split " + messages.length + " messages into " + chunkedMessages.length + " chunks");
-        console.log(chunkedMessages);
+    }
+    else { // Put the whole thing into one chunk if it's not big
+        chunkedMessages = [messages];
     }
     // Parse each message:
     chunkedMessages[0].forEach(function (currentMsg) {

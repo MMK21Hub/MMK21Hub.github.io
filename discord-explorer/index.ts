@@ -46,7 +46,7 @@ interface emoji {
     imageUrl: string
 }
 
-// Some example messages for testing
+// Some example messages for testing:
 let messages: Array<message> = [
     {
       "id": "728382034472468490",
@@ -382,10 +382,11 @@ function loadFile(filePath) { // https://stackoverflow.com/a/41133213/11519302
     return result;
 }
 
-// Parse each message
+// Render an array of messages:
 function renderContent(messages) {
     let chatlog = document.getElementById("chatlog")
-    chatlog.innerHTML = ""
+    chatlog.innerHTML = "" // Reset the chatlog before rendering the new messages
+    // Parse each message:
     messages.forEach((currentMsg) => {
         let messageCard = document.createElement("div") // Prepare the new msg card
         messageCard.setAttribute("class", "message-card")
@@ -395,6 +396,7 @@ function renderContent(messages) {
     console.log("Finished rendering all " + messages.length + " messages")
 }
 
+// Get a saved Discord channel and give it to renderContent():
 function renderChannel(id: { toString: () => any; }) {
     let channelData = JSON.parse(loadFile("assets/"+id+".json"))
     renderContent(channelData.messages)

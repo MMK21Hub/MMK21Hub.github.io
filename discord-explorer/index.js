@@ -1,5 +1,5 @@
 // DiscordRender - View Discord channel exports right in your browser.
-// Some example messages for testing
+// Some example messages for testing:
 var messages = [
     {
         "id": "728382034472468490",
@@ -333,10 +333,11 @@ function loadFile(filePath) {
     }
     return result;
 }
-// Parse each message
+// Render an array of messages:
 function renderContent(messages) {
     var chatlog = document.getElementById("chatlog");
-    chatlog.innerHTML = "";
+    chatlog.innerHTML = ""; // Reset the chatlog before rendering the new messages
+    // Parse each message:
     messages.forEach(function (currentMsg) {
         var messageCard = document.createElement("div"); // Prepare the new msg card
         messageCard.setAttribute("class", "message-card");
@@ -345,6 +346,7 @@ function renderContent(messages) {
     });
     console.log("Finished rendering all " + messages.length + " messages");
 }
+// Get a saved Discord channel and give it to renderContent():
 function renderChannel(id) {
     var channelData = JSON.parse(loadFile("assets/" + id + ".json"));
     renderContent(channelData.messages);

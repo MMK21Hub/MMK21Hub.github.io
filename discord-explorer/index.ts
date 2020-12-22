@@ -103,12 +103,31 @@ let messages: Array<message> = [
     },
 ]
 
+function loadFile(filePath) { // https://stackoverflow.com/a/41133213/11519302
+    var result = null;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", filePath, false);
+    xmlhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    xmlhttp.send();
+    if (xmlhttp.status == 200) {
+        result = xmlhttp.responseText;
+    }
+    return result;
+}
+
 // Parse each message
-let chatlog = document.getElementById("chatlog")
-messages.forEach((currentMsg) => {
-    let messageCard = document.createElement("div") // Prepare the new msg card
-    messageCard.setAttribute("class","message-card")
-    messageCard.innerHTML = currentMsg.content
-    chatlog.appendChild(messageCard) // Add the msg card to the chatlog
-})
-console.log("Finished rendering all " + messages.length + " messages")
+function renderContent(messages) {
+    let chatlog = document.getElementById("chatlog")
+    messages.forEach((currentMsg) => {
+        let messageCard = document.createElement("div") // Prepare the new msg card
+        messageCard.setAttribute("class", "message-card")
+        messageCard.innerHTML = currentMsg.content
+        chatlog.appendChild(messageCard) // Add the msg card to the chatlog
+    })
+    console.log("Finished rendering all " + messages.length + " messages")
+}
+
+function renderChannel(id: { toString: () => any; }) {
+    let channelData = JSON.parse(loadFile("assets/"+id+".json"))
+    renderContent(channelData.messages)
+}

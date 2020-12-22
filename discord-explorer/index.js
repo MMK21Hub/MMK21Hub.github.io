@@ -52,12 +52,29 @@ var messages = [
         mentions: []
     },
 ];
+function loadFile(filePath) {
+    var result = null;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", filePath, false);
+    xmlhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    xmlhttp.send();
+    if (xmlhttp.status == 200) {
+        result = xmlhttp.responseText;
+    }
+    return result;
+}
 // Parse each message
-var chatlog = document.getElementById("chatlog");
-messages.forEach(function (currentMsg) {
-    var messageCard = document.createElement("div"); // Prepare the new msg card
-    messageCard.setAttribute("class", "message-card");
-    messageCard.innerHTML = currentMsg.content;
-    chatlog.appendChild(messageCard); // Add the msg card to the chatlog
-});
-console.log("Finished rendering all " + messages.length + " messages");
+function renderContent(messages) {
+    var chatlog = document.getElementById("chatlog");
+    messages.forEach(function (currentMsg) {
+        var messageCard = document.createElement("div"); // Prepare the new msg card
+        messageCard.setAttribute("class", "message-card");
+        messageCard.innerHTML = currentMsg.content;
+        chatlog.appendChild(messageCard); // Add the msg card to the chatlog
+    });
+    console.log("Finished rendering all " + messages.length + " messages");
+}
+function renderChannel(id) {
+    var channelData = JSON.parse(loadFile("assets/" + id + ".json"));
+    renderContent(channelData.messages);
+}

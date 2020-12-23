@@ -370,6 +370,12 @@ function renderChannel(id) {
     renderContent(channelData.messages);
 }
 // Fix height of chatlog:
-var correctHeight = document.getElementById("main-content").clientHeight - 25;
-document.getElementById("chatlog").style.height =
-    correctHeight.toString() + "px";
+function fixViewport() {
+    var correctHeight = document.getElementById("main-content").clientHeight - 25;
+    document.getElementById("chatlog").style.height =
+        correctHeight.toString() + "px";
+}
+fixViewport();
+$(window).resize(function () {
+    fixViewport();
+});

@@ -444,6 +444,13 @@ function renderChannel(id: { toString: () => any }) {
 }
 
 // Fix height of chatlog:
-let correctHeight = document.getElementById("main-content").clientHeight - 25
-document.getElementById("chatlog").style.height =
-    correctHeight.toString() + "px"
+function fixViewport() {
+    let correctHeight = document.getElementById("main-content").clientHeight - 25
+    document.getElementById("chatlog").style.height =
+        correctHeight.toString() + "px"
+}
+
+fixViewport();
+$(window).resize(function() { // Run on window resize
+    fixViewport();
+});

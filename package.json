@@ -18,5 +18,8 @@
     "url": "https://github.com/MMK21Hub/MMK21Hub.github.io/issues"
   },
   "homepage": "https://github.com/MMK21Hub/MMK21Hub.github.io#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jquery": "^3.5.5"
+  }
 }

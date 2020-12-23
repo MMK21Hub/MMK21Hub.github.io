@@ -48,7 +48,7 @@ var messages = [
         timestampEdited: null,
         callEndedTimestamp: null,
         isPinned: false,
-        content: "lol",
+        content: "A long message to test word wrapping. fly relate house expert charge interview itself because job knowledge colour low late hope... AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         author: {
             id: "511656055974133780",
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
@@ -340,7 +340,6 @@ function renderContent(messages) {
     chatlog.innerHTML = ""; // Reset the chatlog before rendering the new messages
     var chunkedMessages = [];
     if (messages.length >= 100) { // Split the array into chunks if it's big
-        // Split the array into chunks if it's big
         var chunks = Math.ceil(messages.length / 100);
         var i;
         for (i = 0; i < chunks; i++) {
@@ -351,13 +350,18 @@ function renderContent(messages) {
     else { // Put the whole thing into one chunk if it's not big
         chunkedMessages = [messages];
     }
-    // Parse each message:
-    chunkedMessages[0].forEach(function (currentMsg) {
-        var messageCard = document.createElement("div"); // Prepare the new msg card
-        messageCard.setAttribute("class", "message-card");
-        messageCard.innerHTML = currentMsg.content;
-        chatlog.appendChild(messageCard); // Add the msg card to the chatlog
-    });
+    var chunk;
+    for (var _i = 0, chunkedMessages_1 = chunkedMessages; _i < chunkedMessages_1.length; _i++) { // Parse each chunk:
+        chunk = chunkedMessages_1[_i];
+        var currentMsg = void 0;
+        for (var _a = 0, chunk_1 = chunk; _a < chunk_1.length; _a++) { // Parse each message
+            currentMsg = chunk_1[_a];
+            var messageCard = document.createElement("div"); // Prepare the new msg card
+            messageCard.setAttribute("class", "message-card");
+            messageCard.innerHTML = currentMsg.content;
+            chatlog.appendChild(messageCard); // Add the msg card to the chatlog
+        }
+    }
     console.log("Finished rendering all " + messages.length + " messages");
 }
 // Get a saved Discord channel and give it to renderContent():

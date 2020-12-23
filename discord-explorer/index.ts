@@ -98,7 +98,7 @@ let messages: Array<message> = [
         timestampEdited: null,
         callEndedTimestamp: null,
         isPinned: false,
-        content: "lol",
+        content: "A long message to test word wrapping. fly relate house expert charge interview itself because job knowledge colour low late hope... AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         author: {
             id: "511656055974133780",
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
@@ -413,7 +413,6 @@ function renderContent(messages) {
     chatlog.innerHTML = "" // Reset the chatlog before rendering the new messages
     var chunkedMessages = []
     if (messages.length >= 100) { // Split the array into chunks if it's big
-        // Split the array into chunks if it's big
         let chunks = Math.ceil(messages.length / 100)
         var i: number
         for (i = 0; i < chunks; i++) {
@@ -424,13 +423,17 @@ function renderContent(messages) {
     else { // Put the whole thing into one chunk if it's not big
         chunkedMessages = [messages]
     }
-    // Parse each message:
-    chunkedMessages[0].forEach((currentMsg) => {
-        let messageCard = document.createElement("div") // Prepare the new msg card
-        messageCard.setAttribute("class", "message-card")
-        messageCard.innerHTML = currentMsg.content
-        chatlog.appendChild(messageCard) // Add the msg card to the chatlog
-    })
+    
+    let chunk
+    for (chunk of chunkedMessages) { // Parse each chunk:
+        let currentMsg
+        for (currentMsg of chunk) { // Parse each message
+            let messageCard = document.createElement("div") // Prepare the new msg card
+            messageCard.setAttribute("class", "message-card")
+            messageCard.innerHTML = currentMsg.content
+            chatlog.appendChild(messageCard) // Add the msg card to the chatlog
+        }
+    }
     console.log("Finished rendering all " + messages.length + " messages")
 }
 

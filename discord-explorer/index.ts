@@ -98,7 +98,8 @@ let messages: Array<message> = [
         timestampEdited: null,
         callEndedTimestamp: null,
         isPinned: false,
-        content: "A long message to test word wrapping. fly relate house expert charge interview itself because job knowledge colour low late hope... AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        content:
+            "A long message to test word wrapping. fly relate house expert charge interview itself because job knowledge colour low late hope... AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         author: {
             id: "511656055974133780",
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
@@ -412,28 +413,38 @@ function renderContent(messages) {
     let chatlog = document.getElementById("chatlog")
     chatlog.innerHTML = "" // Reset the chatlog before rendering the new messages
     var chunkedMessages = []
-    if (messages.length >= 100) { // Split the array into chunks if it's big
+    if (messages.length >= 100) {
+        // Split the array into chunks if it's big
         let chunks = Math.ceil(messages.length / 100)
         var i: number
         for (i = 0; i < chunks; i++) {
-            chunkedMessages.push(messages.slice(i*100,(i*100)+100))
+            chunkedMessages.push(messages.slice(i * 100, i * 100 + 100))
         }
-        console.log("Split " + messages.length + " messages into " + chunkedMessages.length + " chunks");
-    }
-    else { // Put the whole thing into one chunk if it's not big
+        console.log(
+            "Split " +
+                messages.length +
+                " messages into " +
+                chunkedMessages.length +
+                " chunks"
+        )
+    } else {
+        // Put the whole thing into one chunk if it's not big
         chunkedMessages = [messages]
     }
-    
+
     let chunk
-    for (chunk of chunkedMessages) { // Parse each chunk:
+    for (chunk of chunkedMessages) {
+        // Parse each chunk:
         let currentMsg
-        for (currentMsg of chunk) { // Parse each message
+        for (currentMsg of chunk) {
+            // Parse each message
             let messageCard = document.createElement("div") // Prepare the new msg card
             messageCard.setAttribute("class", "message-card")
             messageCard.innerHTML = currentMsg.content
             chatlog.appendChild(messageCard) // Add the msg card to the chatlog
         }
     }
+    fixViewport()
     console.log("Finished rendering all " + messages.length + " messages")
 }
 
@@ -445,12 +456,17 @@ function renderChannel(id: { toString: () => any }) {
 
 // Fix height of chatlog:
 function fixViewport() {
-    let correctHeight = document.getElementById("main-content").clientHeight - 25
+    let correctHeightChatlog =
+        document.getElementById("main-content").clientHeight - 25
     document.getElementById("chatlog").style.height =
-        correctHeight.toString() + "px"
+        correctHeightChatlog.toString() + "px"
+    document.getElementById("left-menu").style.height =
+        (window.innerHeight - 31).toString() + "px"
+    document.getElementById("chatlog").style.height =
+        (window.innerHeight - 40).toString() + "px"
 }
 
-fixViewport();
-$(window).resize(function() { // Run on window resize
-    fixViewport();
-});
+$(window).resize(function () {
+    // Run on window resize
+    fixViewport()
+})

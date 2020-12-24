@@ -339,29 +339,38 @@ function renderContent(messages) {
     var chatlog = document.getElementById("chatlog");
     chatlog.innerHTML = ""; // Reset the chatlog before rendering the new messages
     var chunkedMessages = [];
-    if (messages.length >= 100) { // Split the array into chunks if it's big
+    if (messages.length >= 100) {
+        // Split the array into chunks if it's big
         var chunks = Math.ceil(messages.length / 100);
         var i;
         for (i = 0; i < chunks; i++) {
-            chunkedMessages.push(messages.slice(i * 100, (i * 100) + 100));
+            chunkedMessages.push(messages.slice(i * 100, i * 100 + 100));
         }
-        console.log("Split " + messages.length + " messages into " + chunkedMessages.length + " chunks");
+        console.log("Split " +
+            messages.length +
+            " messages into " +
+            chunkedMessages.length +
+            " chunks");
     }
-    else { // Put the whole thing into one chunk if it's not big
+    else {
+        // Put the whole thing into one chunk if it's not big
         chunkedMessages = [messages];
     }
     var chunk;
-    for (var _i = 0, chunkedMessages_1 = chunkedMessages; _i < chunkedMessages_1.length; _i++) { // Parse each chunk:
+    for (var _i = 0, chunkedMessages_1 = chunkedMessages; _i < chunkedMessages_1.length; _i++) {
         chunk = chunkedMessages_1[_i];
+        // Parse each chunk:
         var currentMsg = void 0;
-        for (var _a = 0, chunk_1 = chunk; _a < chunk_1.length; _a++) { // Parse each message
+        for (var _a = 0, chunk_1 = chunk; _a < chunk_1.length; _a++) {
             currentMsg = chunk_1[_a];
+            // Parse each message
             var messageCard = document.createElement("div"); // Prepare the new msg card
             messageCard.setAttribute("class", "message-card");
             messageCard.innerHTML = currentMsg.content;
             chatlog.appendChild(messageCard); // Add the msg card to the chatlog
         }
     }
+    fixViewport();
     console.log("Finished rendering all " + messages.length + " messages");
 }
 // Get a saved Discord channel and give it to renderContent():
@@ -371,11 +380,15 @@ function renderChannel(id) {
 }
 // Fix height of chatlog:
 function fixViewport() {
-    var correctHeight = document.getElementById("main-content").clientHeight - 25;
+    var correctHeightChatlog = document.getElementById("main-content").clientHeight - 25;
     document.getElementById("chatlog").style.height =
-        correctHeight.toString() + "px";
+        correctHeightChatlog.toString() + "px";
+    document.getElementById("left-menu").style.height =
+        (window.innerHeight - 31).toString() + "px";
+    document.getElementById("chatlog").style.height =
+        (window.innerHeight - 40).toString() + "px";
 }
-fixViewport();
 $(window).resize(function () {
+    // Run on window resize
     fixViewport();
 });

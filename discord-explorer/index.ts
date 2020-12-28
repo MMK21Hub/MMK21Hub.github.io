@@ -395,7 +395,7 @@ let messages: Array<message> = [
     },
 ]
 
-function loadFile(filePath) {
+function request(filePath) {
     // https://stackoverflow.com/a/41133213/11519302
     var result = null
     var xmlhttp = new XMLHttpRequest()
@@ -450,7 +450,7 @@ function renderContent(messages) {
 
 // Get a saved Discord channel and give it to renderContent():
 function renderChannel(id: { toString: () => any }) {
-    let channelData = JSON.parse(loadFile("assets/" + id + ".json"))
+    let channelData = JSON.parse(request("assets/" + id + ".json"))
     renderContent(channelData.messages)
 }
 
@@ -470,3 +470,67 @@ $(window).resize(function () {
     // Run on window resize
     fixViewport()
 })
+
+function checkStatuses() {
+    let downStatuses = []
+    let mojangStatus = JSON.parse(
+        request(
+            "https://cors-anywhere.herokuapp.com/https://status.mojang.com/check"
+        )
+    )
+
+    if (mojangStatus[0]["minecraft.net"] != "green") {
+        downStatuses.push("minecraft.net")
+    }
+    if (mojangStatus[1]["session.minecraft.net"] != "green") {
+        downStatuses.push("session.minecraft.net")
+    }
+    if (mojangStatus[2]["account.mojang.com"] != "green") {
+        downStatuses.push("account.mojang.com")
+    }
+    if (mojangStatus[3]["authserver.mojang.com"] != "green") {
+        downStatuses.push("authserver.mojang.com")
+    }
+    if (mojangStatus[5]["api.mojang.com"] != "green") {
+        downStatuses.push("api.mojang.com")
+    }
+    if (mojangStatus[6]["textures.minecraft.net"] != "green") {
+        downStatuses.push("textures.minecraft.net")
+    }
+    if (mojangStatus[7]["mojang.com"] != "green") {
+        downStatuses.push("mojang.com")
+    }
+
+    let githubStatus = JSON.parse(
+        request("https://kctbh9vrtdwd.statuspage.io/api/v2/status.json")
+    )
+    if (githubStatus.status.indicator == "major") {
+        downStatuses.push("github.com")
+    }
+    githubStatus = JSON.parse(
+        request("https://kctbh9vrtdwd.statuspage.io/api/v2/components.json")
+    )
+    if (githubStatus.components[8].status != "operational") {
+        downStatuses.push("github.io")
+    }
+
+    return downStatuses
+}
+
+let statuses = checkStatuses()
+if (statuses.length != 0) {
+    /* Might enable this later
+    let i
+    for (i of statuses) {
+        if (i == "github.io") {
+            console.warn(
+                "Github Pages is reporting reduced performance. You may experience slow load times or server errors."
+            )
+        }
+    }
+    */
+    console.warn(
+        "One or more services are reporting degraded performance or an outage.",
+        statuses
+    )
+}

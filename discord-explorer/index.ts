@@ -408,8 +408,12 @@ function request(filePath) {
     return result
 }
 
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 // Render an array of messages:
-function renderContent(messages) {
+async function renderContent(messages) {
     let chatlog = document.getElementById("chatlog")
     chatlog.innerHTML = "" // Reset the chatlog before rendering the new messages
     var chunkedMessages = []
@@ -433,6 +437,7 @@ function renderContent(messages) {
     }
 
     let chunk
+    i = 0
     for (chunk of chunkedMessages) {
         // Parse each chunk:
         let currentMsg
@@ -443,9 +448,21 @@ function renderContent(messages) {
             messageCard.innerHTML = currentMsg.content
             chatlog.appendChild(messageCard) // Add the msg card to the chatlog
         }
+        $("#progress").html(
+            "Rendering " +
+                messages.length +
+                " messages. " +
+                Math.round((i / chunkedMessages.length) * 100) +
+                "%"
+        )
+        await sleep("20")
+
+        i++
     }
     fixViewport()
     console.log("Finished rendering all " + messages.length + " messages")
+    $("#progress").hide()
+    $("#chatlog").show()
 }
 
 // Get a saved Discord channel and give it to renderContent():
@@ -517,7 +534,7 @@ function checkStatuses() {
     return downStatuses
 }
 
-let statuses = checkStatuses()
+//let statuses = checkStatuses()
 if (statuses.length != 0) {
     /* Might enable this later
     let i

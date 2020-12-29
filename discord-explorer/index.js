@@ -1,6 +1,15 @@
 // DiscordRender - View Discord channel exports right in your browser.
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 // Some example messages for testing:
-var messages = [
+let messages = [
     {
         id: "728382034472468490",
         type: "Default",
@@ -14,12 +23,12 @@ var messages = [
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
             discriminator: "1511",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728382407421460590",
@@ -34,12 +43,12 @@ var messages = [
             name: "KodingKat",
             discriminator: "8639",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/603662813524656180/bc53d93eb196365372a82d175a9fcd21.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/603662813524656180/bc53d93eb196365372a82d175a9fcd21.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728382594038890556",
@@ -54,12 +63,12 @@ var messages = [
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
             discriminator: "1511",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728634998726590594",
@@ -74,12 +83,12 @@ var messages = [
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
             discriminator: "1511",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728635063209820202",
@@ -94,12 +103,12 @@ var messages = [
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
             discriminator: "1511",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728638396393586769",
@@ -114,12 +123,12 @@ var messages = [
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
             discriminator: "1511",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728638519073046657",
@@ -134,12 +143,12 @@ var messages = [
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
             discriminator: "1511",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728638579324223558",
@@ -154,12 +163,12 @@ var messages = [
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
             discriminator: "1511",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728639315613188117",
@@ -174,12 +183,12 @@ var messages = [
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
             discriminator: "1511",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728639554302509096",
@@ -194,12 +203,12 @@ var messages = [
             name: "KodingKat",
             discriminator: "8639",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/603662813524656180/bc53d93eb196365372a82d175a9fcd21.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/603662813524656180/bc53d93eb196365372a82d175a9fcd21.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728639634585813074",
@@ -214,12 +223,12 @@ var messages = [
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
             discriminator: "1511",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728639911237910528",
@@ -234,12 +243,12 @@ var messages = [
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
             discriminator: "1511",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728639961972080641",
@@ -254,12 +263,12 @@ var messages = [
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
             discriminator: "1511",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728640087834755132",
@@ -274,12 +283,12 @@ var messages = [
             name: "KodingKat",
             discriminator: "8639",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/603662813524656180/bc53d93eb196365372a82d175a9fcd21.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/603662813524656180/bc53d93eb196365372a82d175a9fcd21.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728640166201131018",
@@ -294,12 +303,12 @@ var messages = [
             name: "KodingKat",
             discriminator: "8639",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/603662813524656180/bc53d93eb196365372a82d175a9fcd21.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/603662813524656180/bc53d93eb196365372a82d175a9fcd21.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
     {
         id: "728640692208926732",
@@ -314,12 +323,12 @@ var messages = [
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
             discriminator: "1511",
             isBot: false,
-            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png"
+            avatarUrl: "https://cdn.discordapp.com/avatars/511656055974133780/382b515765ba3155c7461c9842c0cb88.png",
         },
         attachments: [],
         embeds: [],
         reactions: [],
-        mentions: []
+        mentions: [],
     },
 ];
 function request(filePath) {
@@ -334,53 +343,66 @@ function request(filePath) {
     }
     return result;
 }
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
 // Render an array of messages:
 function renderContent(messages) {
-    var chatlog = document.getElementById("chatlog");
-    chatlog.innerHTML = ""; // Reset the chatlog before rendering the new messages
-    var chunkedMessages = [];
-    if (messages.length >= 100) {
-        // Split the array into chunks if it's big
-        var chunks = Math.ceil(messages.length / 100);
-        var i;
-        for (i = 0; i < chunks; i++) {
-            chunkedMessages.push(messages.slice(i * 100, i * 100 + 100));
+    return __awaiter(this, void 0, void 0, function* () {
+        let chatlog = document.getElementById("chatlog");
+        chatlog.innerHTML = ""; // Reset the chatlog before rendering the new messages
+        var chunkedMessages = [];
+        if (messages.length >= 100) {
+            // Split the array into chunks if it's big
+            let chunks = Math.ceil(messages.length / 100);
+            var i;
+            for (i = 0; i < chunks; i++) {
+                chunkedMessages.push(messages.slice(i * 100, i * 100 + 100));
+            }
+            console.log("Split " +
+                messages.length +
+                " messages into " +
+                chunkedMessages.length +
+                " chunks");
         }
-        console.log("Split " +
-            messages.length +
-            " messages into " +
-            chunkedMessages.length +
-            " chunks");
-    }
-    else {
-        // Put the whole thing into one chunk if it's not big
-        chunkedMessages = [messages];
-    }
-    var chunk;
-    for (var _i = 0, chunkedMessages_1 = chunkedMessages; _i < chunkedMessages_1.length; _i++) {
-        chunk = chunkedMessages_1[_i];
-        // Parse each chunk:
-        var currentMsg = void 0;
-        for (var _a = 0, chunk_1 = chunk; _a < chunk_1.length; _a++) {
-            currentMsg = chunk_1[_a];
-            // Parse each message
-            var messageCard = document.createElement("div"); // Prepare the new msg card
-            messageCard.setAttribute("class", "message-card");
-            messageCard.innerHTML = currentMsg.content;
-            chatlog.appendChild(messageCard); // Add the msg card to the chatlog
+        else {
+            // Put the whole thing into one chunk if it's not big
+            chunkedMessages = [messages];
         }
-    }
-    fixViewport();
-    console.log("Finished rendering all " + messages.length + " messages");
+        let chunk;
+        i = 0;
+        for (chunk of chunkedMessages) {
+            // Parse each chunk:
+            let currentMsg;
+            for (currentMsg of chunk) {
+                // Parse each message
+                let messageCard = document.createElement("div"); // Prepare the new msg card
+                messageCard.setAttribute("class", "message-card");
+                messageCard.innerHTML = currentMsg.content;
+                chatlog.appendChild(messageCard); // Add the msg card to the chatlog
+            }
+            $("#progress").html("Rendering " +
+                messages.length +
+                " messages. " +
+                Math.round((i / chunkedMessages.length) * 100) +
+                "%");
+            yield sleep("20");
+            i++;
+        }
+        fixViewport();
+        console.log("Finished rendering all " + messages.length + " messages");
+        $("#progress").hide();
+        $("#chatlog").show();
+    });
 }
 // Get a saved Discord channel and give it to renderContent():
 function renderChannel(id) {
-    var channelData = JSON.parse(request("assets/" + id + ".json"));
+    let channelData = JSON.parse(request("assets/" + id + ".json"));
     renderContent(channelData.messages);
 }
 // Fix height of chatlog:
 function fixViewport() {
-    var correctHeightChatlog = document.getElementById("main-content").clientHeight - 25;
+    let correctHeightChatlog = document.getElementById("main-content").clientHeight - 25;
     document.getElementById("chatlog").style.height =
         correctHeightChatlog.toString() + "px";
     document.getElementById("left-menu").style.height =
@@ -393,8 +415,8 @@ $(window).resize(function () {
     fixViewport();
 });
 function checkStatuses() {
-    var downStatuses = [];
-    var mojangStatus = JSON.parse(request("https://cors-anywhere.herokuapp.com/https://status.mojang.com/check"));
+    let downStatuses = [];
+    let mojangStatus = JSON.parse(request("https://cors-anywhere.herokuapp.com/https://status.mojang.com/check"));
     if (mojangStatus[0]["minecraft.net"] != "green") {
         downStatuses.push("minecraft.net");
     }
@@ -416,7 +438,7 @@ function checkStatuses() {
     if (mojangStatus[7]["mojang.com"] != "green") {
         downStatuses.push("mojang.com");
     }
-    var githubStatus = JSON.parse(request("https://kctbh9vrtdwd.statuspage.io/api/v2/status.json"));
+    let githubStatus = JSON.parse(request("https://kctbh9vrtdwd.statuspage.io/api/v2/status.json"));
     if (githubStatus.status.indicator == "major") {
         downStatuses.push("github.com");
     }
@@ -426,7 +448,7 @@ function checkStatuses() {
     }
     return downStatuses;
 }
-var statuses = checkStatuses();
+//let statuses = checkStatuses()
 if (statuses.length != 0) {
     /* Might enable this later
     let i

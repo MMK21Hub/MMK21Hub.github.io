@@ -53,11 +53,11 @@
       background-color: #2f3136;
     }
 
-    .primary-box{
+    .primary-box {
       padding: 8px;
     }
 
-    .card-view .message-card{
+    .card-view .message-card {
       background-color: #51565F;
       padding-left: 72px;
       padding-top: .125rem;
@@ -67,7 +67,7 @@
       box-shadow: rgba(0, 0, 0, 0.12) 2px 2px 3px 2px;
     }
 
-    .discord-view .message-card{
+    .discord-view .message-card {
       background-color: #36393f;
       padding-left: 72px;
       padding-top: .125rem;
@@ -81,6 +81,7 @@
       padding-right: 75px;
       height: 100px;
       overflow: auto;
+      display: none;
     }
   </style>
 </head>
@@ -95,6 +96,9 @@
         <button onclick="renderChannel('727912383833702411')">#general</button>
       </div>
       <div class="primary-box" id="main-content">
+        <div id="progress">
+
+        </div>
         <div id="chatlog">
 
         </div>

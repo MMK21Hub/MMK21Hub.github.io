@@ -436,31 +436,28 @@ async function renderContent(messages) {
         chunkedMessages = [messages]
     }
 
+    let currentChunk = 0
     let chunk
-    i = 0
-    for (chunk of chunkedMessages) {
-        // Parse each chunk:
-        let currentMsg
-        for (currentMsg of chunk) {
-            // Parse each message
-            let messageCard = document.createElement("div") // Prepare the new msg card
-            messageCard.setAttribute("class", "message-card")
-            messageCard.innerHTML = currentMsg.content
-            chatlog.appendChild(messageCard) // Add the msg card to the chatlog
-        }
-        $("#progress").html(
-            "Rendering " +
-                messages.length +
-                " messages. " +
-                Math.round((i / chunkedMessages.length) * 100) +
-                "%"
-        )
-        await sleep("20")
+    chunk = chunkedMessages[currentChunk]
+    // Parse each chunk:
+    let currentMsg
+    for (currentMsg of chunk) {
+        // Parse each message
+        let messageCard = document.createElement("div") // Prepare the new msg card
+        messageCard.setAttribute("class", "message-card")
+        messageCard.innerHTML = currentMsg.content
+        chatlog.appendChild(messageCard) // Add the msg card to the chatlog
 
-        i++
+        $("#progress").html("Rendering " + chunk.length + " messages")
     }
     fixViewport()
-    console.log("Finished rendering all " + messages.length + " messages")
+    console.log(
+        "Finished rendering chunk " +
+            currentChunk +
+            " (" +
+            chunk.length +
+            " messages)"
+    )
     $("#progress").hide()
     $("#chatlog").show()
 }
@@ -492,7 +489,7 @@ function checkStatuses() {
     let downStatuses = []
     let mojangStatus = JSON.parse(
         request(
-            "https://cors-anywhere.herokuapp.com/https://status.mojang.com/check"
+            "https://rocky-castle-55647.herokuapp.com/https://status.mojang.com/check"
         )
     )
 
@@ -534,7 +531,7 @@ function checkStatuses() {
     return downStatuses
 }
 
-//let statuses = checkStatuses()
+let statuses = checkStatuses()
 if (statuses.length != 0) {
     /* Might enable this later
     let i

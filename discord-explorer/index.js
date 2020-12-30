@@ -495,8 +495,11 @@ $("#chatlog").on("scroll", function () {
     let fullHeight = document.getElementById("chatlog").scrollHeight;
     let height = $("#chatlog").height();
     let scrollPercent = (scrollPosition / (fullHeight - height)) * 100;
-    if (scrollPercent >= 90 && !loadingMessages) {
-        console.log("Load more messages!");
+    if (scrollPercent >= 95 && !loadingMessages) {
         loadingMessages = true;
+        renderChunk(loadedChunks);
+        setTimeout(() => {
+            loadingMessages = false;
+        }, 10);
     }
 });

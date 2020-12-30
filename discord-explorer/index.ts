@@ -548,3 +548,21 @@ if (statuses.length != 0) {
         statuses
     )
 }
+
+function loadChunk(chunkIndex: number) {
+    console.log("Load chunk ", chunkIndex)
+}
+
+// Lazy loading of message chunks:
+let loadingMessages = false
+$("#chatlog").on("scroll", function () {
+    let scrollPosition = $("#chatlog").scrollTop()
+    let fullHeight = document.getElementById("chatlog").scrollHeight
+    let height = $("#chatlog").height()
+    let scrollPercent = (scrollPosition / (fullHeight - height)) * 100
+
+    if (scrollPercent >= 90 && !loadingMessages) {
+        console.log("Load more messages!")
+        loadingMessages = true
+    }
+})

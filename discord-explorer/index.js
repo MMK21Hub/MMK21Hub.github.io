@@ -459,3 +459,18 @@ if (statuses.length != 0) {
     */
     console.warn("One or more services are reporting degraded performance or an outage.", statuses);
 }
+function loadChunk(chunkIndex) {
+    console.log("Load chunk ", chunkIndex);
+}
+// Lazy loading of message chunks:
+let loadingMessages = false;
+$("#chatlog").on("scroll", function () {
+    let scrollPosition = $("#chatlog").scrollTop();
+    let fullHeight = document.getElementById("chatlog").scrollHeight;
+    let height = $("#chatlog").height();
+    let scrollPercent = (scrollPosition / (fullHeight - height)) * 100;
+    if (scrollPercent >= 90 && !loadingMessages) {
+        console.log("Load more messages!");
+        loadingMessages = true;
+    }
+});

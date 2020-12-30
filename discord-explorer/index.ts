@@ -395,6 +395,8 @@ let messages: Array<message> = [
     },
 ]
 
+let currentChannel: { data?; id?: string } = {}
+
 function request(filePath) {
     // https://stackoverflow.com/a/41133213/11519302
     var result = null
@@ -435,6 +437,7 @@ async function renderContent(messages) {
         // Put the whole thing into one chunk if it's not big
         chunkedMessages = [messages]
     }
+    currentChannel.data = chunkedMessages
 
     let currentChunk = 0
     let chunk
@@ -443,11 +446,7 @@ async function renderContent(messages) {
     let currentMsg
     for (currentMsg of chunk) {
         // Parse each message
-        let messageCard = document.createElement("div") // Prepare the new msg card
-        messageCard.setAttribute("class", "message-card")
-        messageCard.innerHTML = currentMsg.content
-        chatlog.appendChild(messageCard) // Add the msg card to the chatlog
-
+        renderMessage(currentMsg)
         $("#progress").html("Rendering " + chunk.length + " messages")
     }
     fixViewport()
@@ -462,10 +461,39 @@ async function renderContent(messages) {
     $("#chatlog").show()
 }
 
+function renderMessage(msg: any) {
+    let messageCard = document.createElement("div") // Prepare the new msg card
+    messageCard.setAttribute("class", "message-card")
+    messageCard.innerHTML = msg.content
+    document.getElementById("chatlog").appendChild(messageCard) // Add the msg card to the chatlog
+}
+
 // Get a saved Discord channel and give it to renderContent():
-function renderChannel(id: { toString: () => any }) {
+function renderChannel(id: any) {
+    id = id.toString()
+    currentChannel.id = id
     let channelData = JSON.parse(request("assets/" + id + ".json"))
     renderContent(channelData.messages)
+}
+
+function renderChunk(chunkIndex: number) {
+    let chunk: Array<message> = currentChannel.data[chunkIndex]
+
+    let currentMsg
+    for (currentMsg of chunk) {
+        // Parse each message
+        renderMessage(currentMsg)
+        $("#progress").html("Rendering " + chunk.length + " messages")
+    }
+    fixViewport()
+    console.log(
+        "Finished rendering chunk " +
+            chunkIndex +
+            " (" +
+            chunk.length +
+            " messages)"
+    )
+    $("#progress").hide()
 }
 
 // Fix height of chatlog:

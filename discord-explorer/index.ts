@@ -592,6 +592,12 @@ $("#chatlog").on("scroll", function () {
     let height = $("#chatlog").height()
     let scrollPercent = (scrollPosition / (fullHeight - height)) * 100
 
+    let threshold = 95
+    if (loadedChunks >= 10) {
+        threshold = 99
+    } else if (loadedChunks >= 20) {
+        threshold = 100
+    }
     if (scrollPercent >= 95 && !loadingMessages) {
         loadingMessages = true
         renderChunk(loadedChunks)

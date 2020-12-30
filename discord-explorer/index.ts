@@ -396,6 +396,7 @@ let messages: Array<message> = [
 ]
 
 let currentChannel: { data?; id?: string } = {}
+let loadedChunks = 0
 
 function request(filePath) {
     // https://stackoverflow.com/a/41133213/11519302
@@ -449,6 +450,7 @@ async function renderContent(messages) {
         renderMessage(currentMsg)
         $("#progress").html("Rendering " + chunk.length + " messages")
     }
+    loadedChunks = 1
     fixViewport()
     console.log(
         "Finished rendering chunk " +
@@ -485,6 +487,7 @@ function renderChunk(chunkIndex: number) {
         renderMessage(currentMsg)
         $("#progress").html("Rendering " + chunk.length + " messages")
     }
+    loadedChunks = loadedChunks + 1
     fixViewport()
     console.log(
         "Finished rendering chunk " +

@@ -332,6 +332,7 @@ let messages = [
     },
 ];
 let currentChannel = {};
+let loadedChunks = 0;
 function request(filePath) {
     // https://stackoverflow.com/a/41133213/11519302
     var result = null;
@@ -381,6 +382,7 @@ function renderContent(messages) {
             renderMessage(currentMsg);
             $("#progress").html("Rendering " + chunk.length + " messages");
         }
+        loadedChunks = 1;
         fixViewport();
         console.log("Finished rendering chunk " +
             currentChunk +
@@ -412,6 +414,7 @@ function renderChunk(chunkIndex) {
         renderMessage(currentMsg);
         $("#progress").html("Rendering " + chunk.length + " messages");
     }
+    loadedChunks = loadedChunks + 1;
     fixViewport();
     console.log("Finished rendering chunk " +
         chunkIndex +

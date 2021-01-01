@@ -403,7 +403,10 @@ function renderMessage(msg) {
 function renderChannel(id) {
     id = id.toString();
     currentChannel.id = id;
+    const startTime = performance.now();
     let channelData = JSON.parse(request("assets/" + id + ".json"));
+    const duration = performance.now() - startTime;
+    console.log(`Getting and parsing the JSON took ${Math.round(duration)}ms`);
     renderContent(channelData.messages);
 }
 function renderChunk(chunkIndex) {
@@ -433,9 +436,8 @@ function fixViewport() {
     document.getElementById("chatlog").style.height =
         (window.innerHeight - 40).toString() + "px";
 }
-$(window).resize(function () {
-    // Run on window resize
-    fixViewport();
+$(function () {
+    $(window).on("resize", fixViewport);
 });
 function checkStatuses() {
     let downStatuses = [];
@@ -509,4 +511,11 @@ $("#chatlog").on("scroll", function () {
             loadingMessages = false;
         }, 10);
     }
+});
+// Temporary buttons for testing - actual sidebar in not ready yet
+$("#example-btn").on("click", function () {
+    renderContent(messages);
+});
+$("#true-btn").on("click", function () {
+    renderChannel("727912383833702411");
 });

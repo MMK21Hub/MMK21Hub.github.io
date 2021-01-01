@@ -474,7 +474,10 @@ function renderMessage(msg: any) {
 function renderChannel(id: any) {
     id = id.toString()
     currentChannel.id = id
+    const startTime = performance.now()
     let channelData = JSON.parse(request("assets/" + id + ".json"))
+    const duration = performance.now() - startTime
+    console.log(`Getting and parsing the JSON took ${duration}ms`)
     renderContent(channelData.messages)
 }
 

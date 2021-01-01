@@ -511,7 +511,7 @@ function fixViewport() {
         (window.innerHeight - 40).toString() + "px"
 }
 
-$(window).resize(function () {
+$(window).on("resize", function () {
     // Run on window resize
     fixViewport()
 })

@@ -77,7 +77,7 @@ let messages = [
         timestampEdited: null,
         callEndedTimestamp: null,
         isPinned: false,
-        content: "why don\u0027t you use the new #deleted-channel",
+        content: "This message has some <i>HTML</i> tags. <span onclick='window.alert(\"XSS\")'>Click me!</span>",
         author: {
             id: "511656055974133780",
             name: "\uD83D\uDC11Sheep-kun; SheepCommander\u262D\uD83C\uDFA9",
@@ -397,7 +397,7 @@ function renderMessage(msg) {
     let messageCard = document.createElement("div"); // Prepare the new msg card
     messageCard.setAttribute("class", "message-card");
     messageCard.setAttribute("id", "msg-" + msg.id);
-    messageCard.innerHTML = msg.content;
+    messageCard.innerHTML = escapeHtml(msg.content);
     document.getElementById("chatlog").appendChild(messageCard); // Add the msg card to the chatlog
 }
 // Get a saved Discord channel and give it to renderContent():
@@ -520,3 +520,19 @@ $("#example-btn").on("click", function () {
 $("#true-btn").on("click", function () {
     renderChannel("727912383833702411");
 });
+// Make sure only plain text is rendered:
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+    "/": "&#x2F;",
+    "`": "&#x60;",
+    "=": "&#x3D;",
+};
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+        return entityMap[s];
+    });
+}

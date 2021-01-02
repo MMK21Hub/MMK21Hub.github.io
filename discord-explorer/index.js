@@ -396,6 +396,7 @@ function renderContent(messages) {
 function renderMessage(msg) {
     let messageCard = document.createElement("div"); // Prepare the new msg card
     messageCard.setAttribute("class", "message-card");
+    messageCard.setAttribute("id", "msg-" + msg.id);
     messageCard.innerHTML = msg.content;
     document.getElementById("chatlog").appendChild(messageCard); // Add the msg card to the chatlog
 }

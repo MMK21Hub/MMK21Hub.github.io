@@ -609,7 +609,7 @@ $("#chatlog").on("scroll", function () {
     }
 })
 
-// Temporary buttons for testing - actual sidebar in not ready yet
+// Temporary buttons for testing - actual sidebar is not ready yet
 $("#example-btn").on("click", function () {
     renderContent(messages)
 })

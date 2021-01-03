@@ -444,32 +444,18 @@ async function renderContent(messages) {
     let currentChunk = 0
     let chunk
     chunk = chunkedMessages[currentChunk]
-    // Parse each chunk:
-    let currentMsg
-    for (currentMsg of chunk) {
-        // Parse each message
-        renderMessage(currentMsg)
-        $("#progress").html("Rendering " + chunk.length + " messages")
-    }
-    loadedChunks = 1
-    fixViewport()
-    console.log(
-        "Finished rendering chunk " +
-            currentChunk +
-            " (" +
-            chunk.length +
-            " messages)"
-    )
-    $("#progress").hide()
+
+    // Render the first chunk:
+    renderChunk(0)
     $("#chatlog").show()
 }
 
-function renderMessage(msg: message) {
+function renderMessage(msg: message, chunkElement: HTMLElement) {
     let messageCard = document.createElement("div") // Prepare the new msg card
     messageCard.setAttribute("class", "message-card")
     messageCard.setAttribute("id", "msg-" + msg.id)
     messageCard.innerHTML = escapeHtml(msg.content)
-    document.getElementById("chatlog").appendChild(messageCard) // Add the msg card to the chatlog
+    chunkElement.appendChild(messageCard) // Add the msg card to the chatlog
 }
 
 // Get a saved Discord channel and give it to renderContent():
@@ -486,10 +472,15 @@ function renderChannel(id: any) {
 function renderChunk(chunkIndex: number) {
     let chunk: Array<message> = currentChannel.data[chunkIndex]
 
+    let chunkDiv = document.createElement("div")
+    chunkDiv.setAttribute("class", "chunk")
+    chunkDiv.setAttribute("id", "chunk-" + chunkIndex)
+    document.querySelector("#chatlog").append(chunkDiv)
+
     let currentMsg
     for (currentMsg of chunk) {
         // Parse each message
-        renderMessage(currentMsg)
+        renderMessage(currentMsg, chunkDiv)
         $("#progress").html("Rendering " + chunk.length + " messages")
     }
     loadedChunks = loadedChunks + 1

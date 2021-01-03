@@ -454,7 +454,7 @@ function renderMessage(msg: message, chunkElement: HTMLElement) {
     let messageCard = document.createElement("div") // Prepare the new msg card
     messageCard.setAttribute("class", "message-card")
     messageCard.setAttribute("id", "msg-" + msg.id)
-    messageCard.innerHTML = escapeHtml(msg.content)
+    messageCard.innerText = msg.content
     chunkElement.appendChild(messageCard) // Add the msg card to the chatlog
 }
 
@@ -609,21 +609,3 @@ $("#example-btn").on("click", function () {
 $("#true-btn").on("click", function () {
     renderChannel("727912383833702411")
 })
-
-// Make sure only plain text is rendered:
-var entityMap = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;",
-    "/": "&#x2F;",
-    "`": "&#x60;",
-    "=": "&#x3D;",
-}
-
-function escapeHtml(string) {
-    return String(string).replace(/[&<>"'`=\/]/g, function (s) {
-        return entityMap[s]
-    })
-}

@@ -418,8 +418,7 @@ function sleep(ms) {
 
 // Render an array of messages:
 async function renderContent(messages) {
-    let chatlog = document.getElementById("chatlog")
-    chatlog.innerHTML = "" // Reset the chatlog before rendering the new messages
+    $("#chatlog").html("") // Reset the chatlog before rendering the new messages
     var chunkedMessages = []
     if (messages.length >= 100) {
         // Split the array into chunks if it's big
@@ -475,7 +474,7 @@ function renderChunk(chunkIndex: number) {
     let chunkDiv = document.createElement("div")
     chunkDiv.setAttribute("class", "chunk")
     chunkDiv.setAttribute("id", "chunk-" + chunkIndex)
-    document.querySelector("#chatlog").append(chunkDiv)
+    $("#chatlog").append(chunkDiv)
 
     let currentMsg
     for (currentMsg of chunk) {
@@ -497,14 +496,10 @@ function renderChunk(chunkIndex: number) {
 
 // Fix height of chatlog:
 function fixViewport() {
-    let correctHeightChatlog =
-        document.getElementById("main-content").clientHeight - 25
-    document.getElementById("chatlog").style.height =
-        correctHeightChatlog.toString() + "px"
-    document.getElementById("left-menu").style.height =
-        (window.innerHeight - 31).toString() + "px"
-    document.getElementById("chatlog").style.height =
-        (window.innerHeight - 40).toString() + "px"
+    let correctHeightChatlog = $("#main-content").height() - 25
+    $("#chatlog").css("height", correctHeightChatlog.toString() + "px")
+    $("#left-menu").css("height", (window.innerHeight - 31).toString() + "px")
+    $("#chatlog").css("height", (window.innerHeight - 40).toString() + "px")
 }
 
 $(function () {

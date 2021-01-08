@@ -331,6 +331,13 @@ let messages = [
         mentions: [],
     },
 ];
+// Help tooltips:
+let helpTooltips = {
+    chatlog: "The chatlog - This is where all the messages show up.",
+    sidebar: "The sidebar - Switch between different channels here.",
+    top_bar: "Top app bar - The title of your current screen and quick actions are here.",
+    message_card: "This is a discord message.",
+};
 let currentChannel = {};
 let loadedChunks = 0;
 function request(filePath) {

@@ -405,6 +405,18 @@ let helpTooltips = {
     message_card: "This is a discord message.",
 }
 
+// Channels:
+let channelList = [
+    {
+        id: "727912383833702411",
+        name: "general",
+    },
+    {
+        id: "793448224353550346",
+        name: "mind-is-tree",
+    },
+]
+
 let currentChannel: { data?; id?: string } = {}
 let loadedChunks = 0
 
@@ -427,7 +439,9 @@ function sleep(ms) {
 
 // Render an array of messages:
 async function renderContent(messages) {
-    $("#chatlog").html("") // Reset the chatlog before rendering the new messages
+    $("#chatlog") // Reset the chatlog before rendering the new messages
+        .html("")
+        .scrollTop(0)
     var chunkedMessages = []
     if (messages.length >= 100) {
         // Split the array into chunks if it's big
@@ -586,6 +600,7 @@ function loadChunk(chunkIndex: number) {
 // Lazy loading of message chunks:
 let loadingMessages = false
 $("#chatlog").on("scroll", function () {
+    if (loadedChunks >= currentChannel.data.length) return
     let scrollPosition = $("#chatlog").scrollTop()
     let fullHeight = document.getElementById("chatlog").scrollHeight
     let height = $("#chatlog").height()
@@ -606,10 +621,18 @@ $("#chatlog").on("scroll", function () {
     }
 })
 
-// Temporary buttons for testing - actual sidebar is not ready yet
-$("#example-btn").on("click", function () {
-    renderContent(messages)
-})
-$("#true-btn").on("click", function () {
-    renderChannel("727912383833702411")
-})
+function loadSidebar() {
+    // Create the sidebar items
+    for (const channel of channelList) {
+        let button = document.createElement("a")
+        button.dataset.channelId = channel.id
+        button.className = "sidebar-item"
+        button.innerText = channel.name
+        $("#left-menu").append(button)
+    }
+
+    // Add the event listeners
+    $(".sidebar-item").on("click", function (ctx) {
+        renderChannel(ctx.target.dataset.channelId)
+    })
+}

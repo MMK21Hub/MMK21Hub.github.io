@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Web apps hosted by GH pages",
   "main": "index.html",
+  "scripts": {
+    "build": "webpack"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MMK21Hub/MMK21Hub.github.io.git"
@@ -20,6 +23,8 @@
   "homepage": "https://github.com/MMK21Hub/MMK21Hub.github.io#readme",
   "dependencies": {},
   "devDependencies": {
-    "@types/jquery": "^3.5.5"
+    "@types/jquery": "^3.5.5",
+    "webpack": "^5.13.0",
+    "webpack-cli": "^4.3.1"
   }
 }

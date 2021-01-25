@@ -481,8 +481,7 @@ function renderMessage(msg: message, chunkElement: HTMLElement) {
 }
 
 // Get a saved Discord channel and give it to renderContent():
-function renderChannel(id: any) {
-    id = id.toString()
+function renderChannel(id: string) {
     currentChannel.id = id
     const startTime = performance.now()
     let channelData = JSON.parse(request("assets/" + id + ".json"))
@@ -519,10 +518,10 @@ function renderChunk(chunkIndex: number) {
 
 // Fix height of chatlog:
 function fixViewport() {
-    let correctHeightChatlog = $("#main-content").height() - 25
-    $("#chatlog").css("height", correctHeightChatlog.toString() + "px")
-    $("#left-menu").css("height", (window.innerHeight - 31).toString() + "px")
-    //$("#chatlog").css("height", (window.innerHeight - 40).toString() + "px")
+    //let correctHeightChatlog = $("#main-content").height() - 25
+    //$("#chatlog").css("height", correctHeightChatlog.toString() + "px")
+    $("#left-menu").css("height", window.innerHeight.toString() + "px")
+    $("#chatlog").css("height", (window.innerHeight - 40).toString() + "px")
 }
 
 $(() => {
@@ -624,16 +623,20 @@ $("#chatlog").on("scroll", function () {
 
 function loadSidebar() {
     // Create the sidebar items
+    $("#left-menu").append($('<div id="channels"></div>'))
     for (const channel of channelList) {
-        let button = document.createElement("a")
-        button.dataset.channelId = channel.id
-        button.className = "sidebar-item"
-        button.innerText = channel.name
-        $("#left-menu").append(button)
+        let button = $(`
+            <div class="sidebar-item">
+                <a class="channel-label" href="#"> ${channel.name} </a>
+            </div>
+        `)
+        button[0].dataset.channelId = channel.id
+        $("#channels").append(button)
     }
 
     // Add the event listeners
     $(".sidebar-item").on("click", function (ctx) {
-        renderChannel(ctx.target.dataset.channelId)
+        renderChannel(ctx.target.parentElement.dataset.channelId.toString())
+        ctx.target.setAttribute("active", "true")
     })
 }

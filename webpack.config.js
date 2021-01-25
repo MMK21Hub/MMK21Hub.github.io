@@ -1,9 +1,13 @@
 module.exports = {
-    entry: "./discord-explorer/index.js",
+    entry: "./discord-explorer/index.ts",
     output: {
         filename: "discord-explorer.js",
     },
     module: {
-        rules: [],
+        rules: [{ test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/ }],
     },
+    resolve: {
+        extensions: [".tsx", ".ts", ".js"],
+    },
+    watch: true,
 }

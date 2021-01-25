@@ -444,8 +444,9 @@ function fixViewport() {
     $("#left-menu").css("height", (window.innerHeight - 31).toString() + "px");
     $("#chatlog").css("height", (window.innerHeight - 40).toString() + "px");
 }
-$(function () {
+$(() => {
     $(window).on("resize", fixViewport);
+    loadSidebar();
 });
 function checkStatuses() {
     let downStatuses = [];

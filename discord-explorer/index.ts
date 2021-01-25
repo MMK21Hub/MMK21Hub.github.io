@@ -417,10 +417,10 @@ let channelList = [
     },
 ]
 
-let currentChannel: { data?; id?: string } = {}
+let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
 
-function request(filePath) {
+function request(filePath: string) {
     // https://stackoverflow.com/a/41133213/11519302
     var result = null
     var xmlhttp = new XMLHttpRequest()
@@ -433,12 +433,12 @@ function request(filePath) {
     return result
 }
 
-function sleep(ms) {
+function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 // Render an array of messages:
-async function renderContent(messages) {
+async function renderContent(messages: message[]) {
     $("#chatlog") // Reset the chatlog before rendering the new messages
         .html("")
         .scrollTop(0)
@@ -522,11 +522,12 @@ function fixViewport() {
     let correctHeightChatlog = $("#main-content").height() - 25
     $("#chatlog").css("height", correctHeightChatlog.toString() + "px")
     $("#left-menu").css("height", (window.innerHeight - 31).toString() + "px")
-    $("#chatlog").css("height", (window.innerHeight - 40).toString() + "px")
+    //$("#chatlog").css("height", (window.innerHeight - 40).toString() + "px")
 }
 
-$(function () {
+$(() => {
     $(window).on("resize", fixViewport)
+    loadSidebar()
 })
 
 function checkStatuses() {

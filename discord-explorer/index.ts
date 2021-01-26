@@ -132,12 +132,14 @@ let renderChannel = async (id: string) => {
     $("#chatlog") // Reset the chatlog before rendering the new messages
         .html("")
         .scrollTop(0)
+    $("body").css("cursor", "wait")
     currentChannel.id = id
     const startTime = performance.now()
     let channelData = await $.getJSON("assets/" + id + ".json")
     const duration = performance.now() - startTime
     console.log(`Getting and parsing the JSON took ${Math.round(duration)}ms`)
     renderContent(channelData.messages)
+    $("body").css("cursor", "")
 }
 
 function renderChunk(chunkIndex: number) {

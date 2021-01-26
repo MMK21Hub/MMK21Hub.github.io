@@ -176,6 +176,8 @@ function fixViewport() {
     $("#chatlog").css("height", (window.innerHeight - 40).toString() + "px")
 }
 
+import "./index.scss"
+
 $(() => {
     $(window).on("resize", fixViewport)
     loadSidebar()

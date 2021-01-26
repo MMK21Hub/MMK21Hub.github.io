@@ -47,7 +47,7 @@ interface emoji {
 }
 
 // Help tooltips:
-let helpTooltips = {
+const helpTooltips = {
     chatlog: "The chatlog - This is where all the messages show up.",
     sidebar: "The sidebar - Switch between different channels here.",
     top_bar:
@@ -56,7 +56,7 @@ let helpTooltips = {
 }
 
 // Channels:
-let channelList = [
+const channelList = [
     {
         id: "727912383833702411",
         name: "general",
@@ -128,14 +128,14 @@ function renderMessage(msg: message, chunkElement: HTMLElement) {
 }
 
 // Get a saved Discord channel and give it to renderContent():
-let renderChannel = async (id: string) => {
+const renderChannel = async (id: string) => {
     $("#chatlog") // Reset the chatlog before rendering the new messages
         .html("")
         .scrollTop(0)
     $("body").css("cursor", "wait")
     currentChannel.id = id
     const startTime = performance.now()
-    let channelData = await $.getJSON("assets/" + id + ".json")
+    const channelData = await $.getJSON("assets/" + id + ".json")
     const duration = performance.now() - startTime
     console.log(`Getting and parsing the JSON took ${Math.round(duration)}ms`)
     renderContent(channelData.messages)
@@ -143,7 +143,7 @@ let renderChannel = async (id: string) => {
 }
 
 function renderChunk(chunkIndex: number) {
-    let chunk: Array<message> = currentChannel.data[chunkIndex]
+    const chunk: Array<message> = currentChannel.data[chunkIndex]
 
     let chunkDiv = document.createElement("div")
     chunkDiv.setAttribute("class", "chunk")
@@ -184,52 +184,56 @@ $(() => {
 })
 
 function checkStatuses() {
-    let downStatuses = []
-    let mojangStatus = JSON.parse(
-        request(
-            "https://rocky-castle-55647.herokuapp.com/https://status.mojang.com/check"
-        )
+    let downStatuses: string[] = []
+    $.getJSON(
+        "https://rocky-castle-55647.herokuapp.com/https://status.mojang.com/check",
+        (data) => {
+            if (data[0]["minecraft.net"] != "green") {
+                downStatuses.push("minecraft.net")
+            }
+            if (data[1]["session.minecraft.net"] != "green") {
+                downStatuses.push("session.minecraft.net")
+            }
+            if (data[2]["account.mojang.com"] != "green") {
+                downStatuses.push("account.mojang.com")
+            }
+            if (data[3]["authserver.mojang.com"] != "green") {
+                downStatuses.push("authserver.mojang.com")
+            }
+            if (data[5]["api.mojang.com"] != "green") {
+                downStatuses.push("api.mojang.com")
+            }
+            if (data[6]["textures.minecraft.net"] != "green") {
+                downStatuses.push("textures.minecraft.net")
+            }
+            if (data[7]["mojang.com"] != "green") {
+                downStatuses.push("mojang.com")
+            }
+        }
     )
 
-    if (mojangStatus[0]["minecraft.net"] != "green") {
-        downStatuses.push("minecraft.net")
-    }
-    if (mojangStatus[1]["session.minecraft.net"] != "green") {
-        downStatuses.push("session.minecraft.net")
-    }
-    if (mojangStatus[2]["account.mojang.com"] != "green") {
-        downStatuses.push("account.mojang.com")
-    }
-    if (mojangStatus[3]["authserver.mojang.com"] != "green") {
-        downStatuses.push("authserver.mojang.com")
-    }
-    if (mojangStatus[5]["api.mojang.com"] != "green") {
-        downStatuses.push("api.mojang.com")
-    }
-    if (mojangStatus[6]["textures.minecraft.net"] != "green") {
-        downStatuses.push("textures.minecraft.net")
-    }
-    if (mojangStatus[7]["mojang.com"] != "green") {
-        downStatuses.push("mojang.com")
-    }
+    $.getJSON(
+        "https://kctbh9vrtdwd.statuspage.io/api/v2/status.json",
+        (data) => {
+            if (data.status.indicator == "major") {
+                downStatuses.push("github.com")
+            }
+        }
+    )
 
-    let githubStatus = JSON.parse(
-        request("https://kctbh9vrtdwd.statuspage.io/api/v2/status.json")
+    $.getJSON(
+        "https://kctbh9vrtdwd.statuspage.io/api/v2/components.json",
+        (data) => {
+            if (data.components[8].status != "operational") {
+                downStatuses.push("github.io")
+            }
+        }
     )
-    if (githubStatus.status.indicator == "major") {
-        downStatuses.push("github.com")
-    }
-    githubStatus = JSON.parse(
-        request("https://kctbh9vrtdwd.statuspage.io/api/v2/components.json")
-    )
-    if (githubStatus.components[8].status != "operational") {
-        downStatuses.push("github.io")
-    }
 
     return downStatuses
 }
 
-let statuses = checkStatuses()
+const statuses = checkStatuses()
 if (statuses.length != 0) {
     /* Might enable this later
     let i
@@ -255,10 +259,10 @@ function loadChunk(chunkIndex: number) {
 let loadingMessages = false
 $("#chatlog").on("scroll", function () {
     if (loadedChunks >= currentChannel.data.length) return
-    let scrollPosition = $("#chatlog").scrollTop()
-    let fullHeight = document.getElementById("chatlog").scrollHeight
-    let height = $("#chatlog").height()
-    let scrollPercent = (scrollPosition / (fullHeight - height)) * 100
+    const scrollPosition = $("#chatlog").scrollTop()
+    const fullHeight = document.getElementById("chatlog").scrollHeight
+    const height = $("#chatlog").height()
+    const scrollPercent = (scrollPosition / (fullHeight - height)) * 100
 
     let threshold = 95
     if (loadedChunks >= 10) {

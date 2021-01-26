@@ -4,7 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home | MMK21Hub web apps</title>
+  <title>Discord Explorer</title>
+  <style>
+    body {
+      background: #000;
+    }
+  </style>
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="../dist/discord-explorer.js" async></script>
@@ -112,6 +117,10 @@
 
     #channels .sidebar-item:active {
       background: var(--background-modifier-active)
+    }
+
+    #channels .sidebar-item[selected] {
+      background: var(--background-modifier-selected)
     }
 
     #channels .sidebar-item .channel-label {

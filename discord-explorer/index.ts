@@ -637,6 +637,7 @@ function loadSidebar() {
     // Add the event listeners
     $(".sidebar-item").on("click", function (ctx) {
         renderChannel(ctx.target.parentElement.dataset.channelId.toString())
-        ctx.target.setAttribute("active", "true")
+        $(".sidebar-item[selected]").attr("selected", null)
+        ctx.target.parentElement.setAttribute("selected", "")
     })
 }

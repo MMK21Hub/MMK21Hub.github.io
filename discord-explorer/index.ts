@@ -176,12 +176,18 @@ function fixViewport() {
     //$("#chatlog").css("height", correctHeightChatlog.toString() + "px")
     $("#left-menu").css("height", window.innerHeight.toString() + "px")
     $("#chatlog").css("height", (window.innerHeight - 40).toString() + "px")
+    if ($(window).width() < 600) {
+        zenSidebar()
+    } else {
+        zenNone()
+    }
 }
 
 import "./index.scss"
 
 $(() => {
     $(window).on("resize", fixViewport)
+    fixViewport()
     loadSidebar()
 })
 
@@ -304,7 +310,7 @@ function loadSidebar() {
 
 function zenSidebar() {
     if (zenState !== "sidebar") {
-        $("#inner-box").css("grid-template-areas", "sidebar")
+        $("#inner-box").css("grid-template-areas", '"sidebar"')
         $("#inner-box").css("grid-template-columns", "unset")
         $("#main-content").hide()
         $("#sidebar").show()
@@ -314,7 +320,7 @@ function zenSidebar() {
 
 function zenContent() {
     if (zenState !== "content") {
-        $("#inner-box").css("grid-template-areas", "main")
+        $("#inner-box").css("grid-template-areas", '"main"')
         $("#inner-box").css("grid-template-columns", "unset")
         $("#left-menu").hide()
         $("#main-content").show()

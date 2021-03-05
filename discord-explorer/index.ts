@@ -70,6 +70,7 @@ const channelList = [
 let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
 
+/** @deprecated Use $.ajax() for HTTP(S) requests */
 function request(filePath: string) {
     // https://stackoverflow.com/a/41133213/11519302
     var result = null

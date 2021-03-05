@@ -177,9 +177,9 @@ function fixViewport() {
     $("#left-menu").css("height", window.innerHeight.toString() + "px")
     $("#chatlog").css("height", (window.innerHeight - 40).toString() + "px")
 
-    if ($(window).width() < 600) {
+    if ($(window).width() < 600 && zenState !== "content") {
         zenSidebar()
-    } else {
+    } else if ($(window).width() > 600) {
         zenNone()
     }
 
@@ -308,10 +308,13 @@ function loadSidebar() {
     }
 
     // Add the event listeners
-    $(".sidebar-item").on("click", function (ctx) {
+    $(".sidebar-item").on("click", (ctx) => {
         $(".sidebar-item[selected]").attr("selected", null)
         renderChannel(ctx.target.parentElement.dataset.channelId.toString())
         ctx.target.parentElement.setAttribute("selected", "")
+
+        zenContent()
+        zenState = "content"
     })
 }
 

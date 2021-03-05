@@ -176,10 +176,17 @@ function fixViewport() {
     //$("#chatlog").css("height", correctHeightChatlog.toString() + "px")
     $("#left-menu").css("height", window.innerHeight.toString() + "px")
     $("#chatlog").css("height", (window.innerHeight - 40).toString() + "px")
+
     if ($(window).width() < 600) {
         zenSidebar()
     } else {
         zenNone()
+    }
+
+    if ($("#main-content").width() < 650) {
+        $("#chatlog").addClass("fullwidth")
+    } else {
+        $("#chatlog").removeClass("fullwidth")
     }
 }
 

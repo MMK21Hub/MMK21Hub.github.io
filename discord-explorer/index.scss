@@ -151,3 +151,8 @@ body {
 #main-content {
     grid-area: main;
 }
+
+#chatlog.fullwidth .message-card {
+    padding-left: 10px;
+    padding-right: 0;
+}

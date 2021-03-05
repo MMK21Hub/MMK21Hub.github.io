@@ -315,8 +315,7 @@ function loadSidebar() {
         renderChannel(ctx.target.parentElement.dataset.channelId.toString())
         ctx.target.parentElement.setAttribute("selected", "")
 
-        zenContent()
-        zenState = "content"
+        zenState == "sidebar" ? zenContent() : null
     })
 }
 

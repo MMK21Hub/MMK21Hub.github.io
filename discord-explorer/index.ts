@@ -298,12 +298,12 @@ $("#chatlog").on("scroll", function () {
 
 function loadSidebar() {
     // Create the sidebar items
-    $("#left-menu").append($('<div id="channels"></div>'))
+    $("#left-menu").append($('<ul id="channels"></ul>'))
     for (const channel of channelList) {
         let button = $(`
-            <div class="sidebar-item">
+            <li class="sidebar-item">
                 <a class="channel-label" href="#"> ${channel.name} </a>
-            </div>
+            </li>
         `)
         button[0].dataset.channelId = channel.id
         $("#channels").append(button)

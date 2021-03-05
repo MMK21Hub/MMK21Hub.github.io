@@ -88,6 +88,9 @@ body {
 }
 
 #channels {
+    padding: 0;
+    margin: 0;
+
     .sidebar-item {
         display: block;
         color: var(--channels-default);

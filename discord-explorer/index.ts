@@ -159,6 +159,7 @@ function renderChunk(chunkIndex: number) {
         $("#progress").html("Rendering " + chunk.length + " messages")
     }
     loadedChunks = loadedChunks + 1
+
     fixViewport()
     console.log(
         "Finished rendering chunk " +
@@ -168,6 +169,7 @@ function renderChunk(chunkIndex: number) {
             " messages)"
     )
     $("#progress").hide()
+    $("#chatlog")[0].focus()
 }
 
 // Fix height of chatlog:

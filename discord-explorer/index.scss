@@ -65,7 +65,7 @@ body {
     display: grid;
     grid-template-columns: 240px auto;
     grid-template-areas: "sidebar main";
-    background-color: #36393f;
+    background-color: var(--background-primary);
     height: 100%;
     width: 100%;
     margin: auto;
@@ -75,7 +75,7 @@ body {
 }
 
 #app {
-    color: white;
+    color: var(--text-normal);
     height: inherit;
     overflow: hidden;
     word-wrap: break-word;
@@ -90,7 +90,7 @@ body {
 #channels {
     .sidebar-item {
         display: block;
-        color: #8e9297;
+        color: var(--channels-default);
         padding: 1px 8px;
         margin-left: 0px;
         border-radius: 4px;
@@ -109,7 +109,7 @@ body {
     }
 
     .sidebar-item:hover {
-        background: rgba(79, 84, 92, 0.16);
+        background: var(--background-modifier-hover)
     }
 
     .sidebar-item:active {
@@ -132,7 +132,7 @@ body {
 }
 
 .discord-view .message-card {
-    background-color: #36393f;
+    background-color: var(--background-primary);
     padding-left: 72px;
     padding-top: .125rem;
     padding-bottom: .125rem;

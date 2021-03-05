@@ -64,6 +64,7 @@ body {
 #inner-box {
     display: grid;
     grid-template-columns: 240px auto;
+    grid-template-areas: "sidebar main";
     background-color: #36393f;
     height: 100%;
     width: 100%;
@@ -83,6 +84,7 @@ body {
 
 #left-menu {
     background-color: #2f3136;
+    grid-area: sidebar;
 }
 
 #channels {
@@ -144,4 +146,8 @@ body {
     height: 100px;
     overflow: auto;
     display: none;
+}
+
+#main-content {
+    grid-area: main;
 }

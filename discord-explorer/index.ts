@@ -299,3 +299,24 @@ function loadSidebar() {
         ctx.target.parentElement.setAttribute("selected", "")
     })
 }
+
+function zenSidebar() {
+    $("#inner-box").css("grid-template-areas", "sidebar")
+    $("#inner-box").css("grid-template-columns", "unset")
+    $("#main-content").hide()
+    $("#sidebar").show()
+}
+
+function zenContent() {
+    $("#inner-box").css("grid-template-areas", "main")
+    $("#inner-box").css("grid-template-columns", "unset")
+    $("#left-menu").hide()
+    $("#main-content").show()
+}
+
+function zenNone() {
+    $("#inner-box").css("grid-template-areas", "")
+    $("#inner-box").css("grid-template-columns", "")
+    $("#left-menu").show()
+    $("#sidebar").show()
+}

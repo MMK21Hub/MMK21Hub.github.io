@@ -69,6 +69,7 @@ const channelList = [
 
 let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
+let zenState: "none" | "sidebar" | "content" = "none"
 
 /** @deprecated Use $.ajax() for HTTP(S) requests */
 function request(filePath: string) {
@@ -302,22 +303,31 @@ function loadSidebar() {
 }
 
 function zenSidebar() {
-    $("#inner-box").css("grid-template-areas", "sidebar")
-    $("#inner-box").css("grid-template-columns", "unset")
-    $("#main-content").hide()
-    $("#sidebar").show()
+    if (zenState !== "sidebar") {
+        $("#inner-box").css("grid-template-areas", "sidebar")
+        $("#inner-box").css("grid-template-columns", "unset")
+        $("#main-content").hide()
+        $("#sidebar").show()
+        zenState = "sidebar"
+    }
 }
 
 function zenContent() {
-    $("#inner-box").css("grid-template-areas", "main")
-    $("#inner-box").css("grid-template-columns", "unset")
-    $("#left-menu").hide()
-    $("#main-content").show()
+    if (zenState !== "content") {
+        $("#inner-box").css("grid-template-areas", "main")
+        $("#inner-box").css("grid-template-columns", "unset")
+        $("#left-menu").hide()
+        $("#main-content").show()
+        zenState = "content"
+    }
 }
 
 function zenNone() {
-    $("#inner-box").css("grid-template-areas", "")
-    $("#inner-box").css("grid-template-columns", "")
-    $("#left-menu").show()
-    $("#sidebar").show()
+    if (zenState !== "none") {
+        $("#inner-box").css("grid-template-areas", "")
+        $("#inner-box").css("grid-template-columns", "")
+        $("#left-menu").show()
+        $("#sidebar").show()
+        zenState = "none"
+    }
 }

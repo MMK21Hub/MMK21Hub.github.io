@@ -333,7 +333,7 @@ function zenNone() {
         $("#inner-box").css("grid-template-areas", "")
         $("#inner-box").css("grid-template-columns", "")
         $("#left-menu").show()
-        $("#content").show()
+        $("#main-content").show()
         zenState = "none"
     }
 }

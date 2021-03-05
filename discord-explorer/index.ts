@@ -313,7 +313,7 @@ function zenSidebar() {
         $("#inner-box").css("grid-template-areas", '"sidebar"')
         $("#inner-box").css("grid-template-columns", "unset")
         $("#main-content").hide()
-        $("#sidebar").show()
+        $("#left-menu").show()
         zenState = "sidebar"
     }
 }
@@ -333,7 +333,7 @@ function zenNone() {
         $("#inner-box").css("grid-template-areas", "")
         $("#inner-box").css("grid-template-columns", "")
         $("#left-menu").show()
-        $("#sidebar").show()
+        $("#content").show()
         zenState = "none"
     }
 }

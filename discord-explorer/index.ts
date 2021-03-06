@@ -211,9 +211,19 @@ $(() => {
 
     const channelID = currentURL.searchParams.get("channel")
     if (channelID) {
-        renderChannel(channelID)
-        $(`[data-channel-id=${channelID}]`)[0].setAttribute("selected", "")
-        zenState == "sidebar" ? zenContent() : null
+        let channelFound = false
+        for (let i of channelList) {
+            if (i.id == channelID) {
+                channelFound = true
+            }
+        }
+        if (channelFound) {
+            renderChannel(channelID)
+            $(`[data-channel-id=${channelID}]`)[0].setAttribute("selected", "")
+            zenState == "sidebar" ? zenContent() : null
+        } else {
+            console.warn("Invalid channel ID found in URL: " + channelID)
+        }
     }
 })
 

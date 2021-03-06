@@ -71,6 +71,7 @@ let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
 let zenState: "none" | "sidebar" | "content" = "none"
 const currentURL = new URL(window.location.href)
+let cursorsStylesheet: HTMLStyleElement | null = null
 
 /** @deprecated Use $.ajax() for HTTP(S) requests */
 function request(filePath: string) {
@@ -145,13 +146,21 @@ const renderChannel = async (id: string) => {
         .html("")
         .scrollTop(0)
     $("body").css("cursor", "wait")
+    const rule = cursorsStylesheet.sheet.insertRule(`\
+    html body {
+        --cursor-pointer: wait;
+    }
+    `)
+
     currentChannel.id = id
     const startTime = performance.now()
     const channelData = await $.getJSON("assets/" + id + ".json")
     const duration = performance.now() - startTime
+
     console.log(`Getting and parsing the JSON took ${Math.round(duration)}ms`)
     renderContent(channelData.messages)
     $("body").css("cursor", "")
+    cursorsStylesheet.sheet.deleteRule(rule)
 }
 
 function renderChunk(chunkIndex: number) {
@@ -208,6 +217,8 @@ $(() => {
     $(window).on("resize", fixViewport)
     fixViewport()
     loadSidebar()
+
+    cursorsStylesheet = document.querySelector("style#cursors")
 
     const channelID = currentURL.searchParams.get("channel")
     if (channelID) {

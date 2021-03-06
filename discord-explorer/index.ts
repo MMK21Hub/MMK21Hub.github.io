@@ -70,6 +70,7 @@ const channelList = [
 let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
 let zenState: "none" | "sidebar" | "content" = "none"
+var currentURL = new URL(window.location.href)
 
 /** @deprecated Use $.ajax() for HTTP(S) requests */
 function request(filePath: string) {
@@ -302,7 +303,7 @@ function loadSidebar() {
     for (const channel of channelList) {
         let button = $(`
             <li class="sidebar-item">
-                <a class="channel-label" href="#"> ${channel.name} </a>
+                <a class="channel-label" href="?channel=${channel.id}"> ${channel.name} </a>
             </li>
         `)
         button[0].dataset.channelId = channel.id
@@ -311,6 +312,7 @@ function loadSidebar() {
 
     // Add the event listeners
     $(".sidebar-item").on("click", (ctx) => {
+        ctx.preventDefault()
         $(".sidebar-item[selected]").attr("selected", null)
         renderChannel(ctx.target.parentElement.dataset.channelId.toString())
         ctx.target.parentElement.setAttribute("selected", "")

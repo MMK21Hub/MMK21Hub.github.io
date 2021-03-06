@@ -96,7 +96,7 @@ body {
 
         .channel-label {
             padding: 6px 0;
-            cursor: pointer;
+            cursor: var(--cursor-pointer);
             display: block;
             color: var(--channels-default);
             text-decoration: none;

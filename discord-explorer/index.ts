@@ -144,7 +144,7 @@ const renderChannel = async (id: string) => {
     $("#chatlog") // Reset the chatlog before rendering the new messages
         .html("")
         .scrollTop(0)
-    $("body").css("cursor", "var(--cursor-pointer)")
+    $("body").css("cursor", "wait")
     currentChannel.id = id
     const startTime = performance.now()
     const channelData = await $.getJSON("assets/" + id + ".json")

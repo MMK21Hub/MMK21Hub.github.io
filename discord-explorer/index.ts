@@ -90,6 +90,13 @@ function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
+function overrideClick(event: any) {
+    const hasModifiers =
+        event.metaKey || event.shiftKey || event.altKey || event.ctrlKey
+    if (hasModifiers || event.button !== 0) return
+    event.preventDefault()
+}
+
 // Render an array of messages:
 const renderContent = async (messages: []) => {
     var chunkedMessages = []
@@ -199,6 +206,13 @@ $(() => {
     $(window).on("resize", fixViewport)
     fixViewport()
     loadSidebar()
+
+    const channelID = currentURL.searchParams.get("channel")
+    if (channelID) {
+        renderChannel(channelID)
+        $(`[data-channel-id=${channelID}]`)[0].setAttribute("selected", "")
+        zenState == "sidebar" ? zenContent() : null
+    }
 })
 
 function checkStatuses() {
@@ -312,7 +326,8 @@ function loadSidebar() {
 
     // Add the event listeners
     $(".sidebar-item").on("click", (ctx) => {
-        ctx.preventDefault()
+        overrideClick(ctx)
+        console.log(ctx.button)
         $(".sidebar-item[selected]").attr("selected", null)
         renderChannel(ctx.target.parentElement.dataset.channelId.toString())
         ctx.target.parentElement.setAttribute("selected", "")

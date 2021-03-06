@@ -70,7 +70,7 @@ const channelList = [
 let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
 let zenState: "none" | "sidebar" | "content" = "none"
-var currentURL = new URL(window.location.href)
+const currentURL = new URL(window.location.href)
 
 /** @deprecated Use $.ajax() for HTTP(S) requests */
 function request(filePath: string) {
@@ -139,10 +139,12 @@ function renderMessage(msg: message, chunkElement: HTMLElement) {
 
 // Get a saved Discord channel and give it to renderContent():
 const renderChannel = async (id: string) => {
+    currentURL.searchParams.set("channel", id.toString())
+    history.replaceState(null, null, currentURL.search) // Update the URL
     $("#chatlog") // Reset the chatlog before rendering the new messages
         .html("")
         .scrollTop(0)
-    $("body").css("cursor", "wait")
+    $("body").css("cursor", "var(--cursor-pointer)")
     currentChannel.id = id
     const startTime = performance.now()
     const channelData = await $.getJSON("assets/" + id + ".json")
@@ -327,7 +329,6 @@ function loadSidebar() {
     // Add the event listeners
     $(".sidebar-item").on("click", (ctx) => {
         overrideClick(ctx)
-        console.log(ctx.button)
         $(".sidebar-item[selected]").attr("selected", null)
         renderChannel(ctx.target.parentElement.dataset.channelId.toString())
         ctx.target.parentElement.setAttribute("selected", "")

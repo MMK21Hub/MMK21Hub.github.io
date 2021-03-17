@@ -8,8 +8,12 @@ module.exports = {
         src: "/",
     },
     plugins: [
-        //"@snowpack/plugin-typescript",
-        "@snowpack/plugin-sass",
+        [
+            "@snowpack/plugin-sass",
+            {
+                native: true,
+            },
+        ],
     ],
     packageOptions: {
         /* ... */

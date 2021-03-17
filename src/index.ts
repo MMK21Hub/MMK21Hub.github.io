@@ -154,7 +154,11 @@ const renderChannel = async (id: string) => {
 
     currentChannel.id = id
     const startTime = performance.now()
-    const channelData = await $.getJSON("assets/" + id + ".json")
+    const channelData = await $.getJSON(
+        "https://raw.githubusercontent.com/MMK21Hub/discord-channels/master/servers/knowledge-base/current/" +
+            id +
+            ".json"
+    )
     const duration = performance.now() - startTime
 
     console.log(`Getting and parsing the JSON took ${Math.round(duration)}ms`)

@@ -7,7 +7,10 @@ module.exports = {
     mount: {
         src: "/",
     },
-    plugins: ["@snowpack/plugin-typescript"],
+    plugins: [
+        //"@snowpack/plugin-typescript",
+        "@snowpack/plugin-sass",
+    ],
     packageOptions: {
         /* ... */
     },

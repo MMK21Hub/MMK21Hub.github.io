@@ -387,3 +387,5 @@ function zenNone() {
         zenState = "none"
     }
 }
+
+import "../assets/logo.png"

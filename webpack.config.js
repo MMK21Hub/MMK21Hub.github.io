@@ -1,7 +1,7 @@
 module.exports = {
-    entry: "./discord-explorer/index.ts",
+    entry: "./src/index.ts",
     output: {
-        filename: "discord-explorer.js",
+        filename: "bundle.js",
     },
     module: {
         rules: [
@@ -10,10 +10,14 @@ module.exports = {
                 test: /\.s[ac]ss$/i,
                 use: ["style-loader", "css-loader", "sass-loader"],
             },
+            {
+                test: /\.html/,
+                type: "asset/resource",
+            },
         ],
     },
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
     },
-    watch: true,
+    //watch: true,
 }

@@ -1,10 +1,11 @@
 {
   "name": "mmk21hub.github.io",
   "version": "1.0.0",
-  "description": "Web apps hosted by GH pages",
-  "main": "index.html",
+  "description": "A collection of Web Apps",
+  "main": "dist/index.html",
   "scripts": {
-    "build": "webpack"
+    "start": "snowpack dev",
+    "build": "snowpack build"
   },
   "repository": {
     "type": "git",
@@ -21,12 +22,15 @@
     "url": "https://github.com/MMK21Hub/MMK21Hub.github.io/issues"
   },
   "homepage": "https://github.com/MMK21Hub/MMK21Hub.github.io#readme",
-  "dependencies": {},
+  "dependencies": {
+    "@snowpack/plugin-typescript": "^1.2.1"
+  },
   "devDependencies": {
     "@types/jquery": "^3.5.5",
     "css-loader": "^5.0.1",
     "sass": "^1.32.5",
     "sass-loader": "^10.1.1",
+    "snowpack": "^3.0.13",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.14",
     "typescript": "^4.1.3",

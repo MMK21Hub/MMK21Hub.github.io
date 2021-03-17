@@ -211,8 +211,6 @@ function fixViewport() {
     }
 }
 
-import "./index.scss"
-
 $(() => {
     $(window).on("resize", fixViewport)
     fixViewport()
@@ -388,4 +386,4 @@ function zenNone() {
     }
 }
 
-import "../assets/logo.png"
+//import "../assets/logo.png"

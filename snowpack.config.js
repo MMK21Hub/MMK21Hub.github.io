@@ -14,6 +14,7 @@ module.exports = {
                 native: true,
             },
         ],
+        //"@snowpack/plugin-typescript",
     ],
     packageOptions: {
         /* ... */

@@ -94,6 +94,15 @@ const channelList = [
     },
 ]
 
+// Enabled features:
+let featureFlags = {
+    tooltips: false,
+    viewbar: false,
+    smartChunkLoading: false,
+    progressBar: false,
+    backToSidebar: false,
+}
+
 let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
 let zenState: "none" | "sidebar" | "content" = "none"

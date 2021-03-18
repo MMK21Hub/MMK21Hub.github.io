@@ -3,7 +3,7 @@
 
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
-    root: "/src/index.html",
+    root: "/src",
     mount: {
         src: "/",
     },

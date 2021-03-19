@@ -1,0 +1,13 @@
+.message-card {
+    background-color: var(--background-primary);
+    padding-left: 72px;
+    padding-top: .125rem;
+    padding-bottom: .125rem;
+    padding-right: 48px;
+    margin: 10px 0px;
+}
+
+#chatlog.fullwidth .message-card {
+    padding-left: 10px;
+    padding-right: 0;
+}

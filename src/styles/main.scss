@@ -1,3 +1,11 @@
+@use "typography";
+@use "utility";
+
+@use "components/sidebar";
+@use "components/message";
+
+
+/* CUSTOM PROPERTIES */
 .discord-view {
     /* Variables adapted from Discord source */
     --header-primary: #fff;
@@ -43,11 +51,7 @@
     --textbox-markdown-syntax: #8e9297;
 }
 
-main {
-    padding-top: 64px;
-    padding-left: 8px;
-}
-
+/* GENERAL STUFF */
 html,
 body {
     height: 100%;
@@ -55,9 +59,17 @@ body {
 
 body {
     margin: 0;
-    font-family: "Roboto", "Ubuntu", "Segoe UI", sans-serif;
 }
 
+#app {
+    color: var(--text-normal);
+    height: inherit;
+    overflow: hidden;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* LAYOUT */
 #inner-box {
     display: grid;
     grid-template-columns: 240px auto;
@@ -71,72 +83,8 @@ body {
     border-top: var(--mdc-theme-primary) solid 10px;
 }
 
-#app {
-    color: var(--text-normal);
-    height: inherit;
-    overflow: hidden;
-    word-wrap: break-word;
-    word-break: break-word;
-}
-
-#left-menu {
-    background-color: #2f3136;
-    grid-area: sidebar;
-}
-
-#channels {
-    padding: 0;
-    margin: 0;
-
-    .sidebar-item {
-        display: block;
-        padding: 1px 8px;
-        margin-left: 0px;
-        border-radius: 4px;
-
-        .channel-label {
-            padding: 6px 0;
-            cursor: var(--cursor-pointer);
-            display: block;
-            color: var(--channels-default);
-            text-decoration: none;
-        }
-    }
-
-    .sidebar-item[selected] {
-        background: var(--background-modifier-selected)
-    }
-
-    .sidebar-item:hover {
-        background: var(--background-modifier-hover)
-    }
-
-    .sidebar-item:active {
-        background: var(--background-modifier-active)
-    }
-}
-
 .primary-box {
     padding: 8px;
-}
-
-.card-view .message-card {
-    background-color: #51565F;
-    padding-left: 72px;
-    padding-top: .125rem;
-    padding-bottom: .125rem;
-    padding-right: 48px;
-    margin: 10px 0px;
-    box-shadow: rgba(0, 0, 0, 0.12) 2px 2px 3px 2px;
-}
-
-.discord-view .message-card {
-    background-color: var(--background-primary);
-    padding-left: 72px;
-    padding-top: .125rem;
-    padding-bottom: .125rem;
-    padding-right: 48px;
-    margin: 10px 0px;
 }
 
 #chatlog {
@@ -149,14 +97,4 @@ body {
 
 #main-content {
     grid-area: main;
-}
-
-#chatlog.fullwidth .message-card {
-    padding-left: 10px;
-    padding-right: 0;
-}
-
-h1 {
-    margin: 8px;
-    font-size: 18px;
 }

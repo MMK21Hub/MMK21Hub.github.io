@@ -16,12 +16,8 @@ module.exports = {
         ],
         //"@snowpack/plugin-typescript",
     ],
-    packageOptions: {
-        /* ... */
-    },
-    devOptions: {
-        /* ... */
-    },
+    packageOptions: { sourceMap: true },
+    devOptions: {},
     buildOptions: {
         out: "dist",
     },

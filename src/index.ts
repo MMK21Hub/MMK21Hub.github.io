@@ -441,3 +441,16 @@ $(() => {
         }
     }
 })
+
+// Error tracking:
+// https://sentry.io/organizations/mmk21
+// @ts-ignore (Snowpack will handle these imports)
+import * as Sentry from "https://cdn.skypack.dev/@sentry/browser" // @ts-ignore
+import { Integrations } from "https://cdn.skypack.dev/@sentry/tracing"
+
+Sentry.init({
+    dsn:
+        "https://8278aa1a41d548e888b2ba35acba19ff@o557500.ingest.sentry.io/5689818",
+    integrations: [new Integrations.BrowserTracing()],
+    tracesSampleRate: 1.0,
+})

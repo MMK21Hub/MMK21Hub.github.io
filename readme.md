@@ -1,11 +1,15 @@
-# Discord Explorer
+<p align="center">
+  <img src="assets/logo-alt-smile.png" alt="Discord Explorer logo" width="100" height="100">
+</p>
+
+<h1 align="center">Discord Explorer</h1>
 
 <p align="center">
-  <img src="assets/logo-alt-smile.png" alt="DiscordRender" />
-</p>
-<p align="center">
   <strong>View Discord chanel exports in your browser</strong>
+  <br>
+  Discord Explorer makes your discord channels portable! Export a single channel or whole server without violating Discord's ToS, upload it, and browse through your message history using a familiar but powerful interface.
 </p>
+
 <p align="center">
     <img alt="GitHub" src="https://img.shields.io/github/license/MMK21Hub/mmk21hub.github.io">
     <img alt="GitHub branch checks state" src="https://img.shields.io/github/checks-status/MMK21Hub/mmk21hub.github.io/main">

@@ -22,7 +22,22 @@
 
 ---
 
+## Features
+
+- Familiar UI
+- Mobile support
+- Installable as a PWA (soon)
+
+## Development tools
+
+- **jQuery** helps us make async HTTPS requests easily, and provides a better way to manipulate the DOM.
+- **Typescript** allows the usage of the latest Javascript features, and also adds type-checking to catch errors before they hit production.
+- **Sass** lets us use features like nesting and loops in our CSS, and keeps our styles organized with partials.
+- **Snowpack** lets us organize our project how we like, import JS libraries from NPM, and compiles everything into an optimized form ready for production.
+
 ## Structure
+
+File and folder naming should be kept to lower-case-with-dashes.
 
 |           Folder | Description                                            |
 | ---------------: | ------------------------------------------------------ |
@@ -35,9 +50,22 @@ On the server, there's a `dist` folder containing compiled files for production.
 
 A `node_modules` folder is also generated when you `npm install` locally. You should not commit this folder.
 
+### Other files
+
+- `readme.md` - Project information and relevant links
+- `contributing.md` - Information on how to contribute to the project
+- `.gitignore` - A list of files that won't be committed to the repo
+
+- `package.json` - Contains project metadata, dependencies, etc.
+- `package-lock.json` - Automatically generated file to keep everyone's installed packages in sync
+
+- `tsconfig.json` - Contains configuration for the Typescript compiler
+- `snowpack.config.js` - Contains configuration for Snowpack
+- `netlify.toml` - Contains configuration for Netlify deployment
+
 ## Branches
 
-- `master` This is what's running in production
+- `master` - This is what's running in production
 
 ## Contributions
 

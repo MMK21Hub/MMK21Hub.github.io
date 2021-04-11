@@ -469,25 +469,26 @@ $(() => {
 
     cursorsStylesheet = document.querySelector("style#cursors")
 
+    // Load a channel from the URL
     const channelID = currentURL.searchParams.get("channel")
     if (channelID) {
-        if (!context.bot) {
-            let channelFound = false
-            for (let i of channelList) {
-                if (i.id === channelID) {
-                    channelFound = true
-                }
+        let channel = null
+        for (let i of channelList) {
+            if (i.id === channelID) {
+                channel = i
             }
-            if (channelFound) {
+        }
+        if (channel) {
+            if (!context.bot) {
                 renderChannel(channelID)
                 $(`[data-channel-id=${channelID}]`)[0].setAttribute(
                     "selected",
                     ""
                 )
                 zenState === "sidebar" ? zenContent() : null
-            } else {
-                console.warn("Invalid channel ID found in URL: " + channelID)
             }
+        } else {
+            console.warn("Invalid channel ID found in URL: " + channelID)
         }
     }
 })

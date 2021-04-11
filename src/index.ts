@@ -487,10 +487,19 @@ $(() => {
                 )
                 zenState === "sidebar" ? zenContent() : null
             }
+
+            // Update OG tags:
+            $("meta[property='og:title']").prop(
+                "content",
+                `${channel.name} - Discord Explorer`
+            )
         } else {
             console.warn("Invalid channel ID found in URL: " + channelID)
         }
     }
+
+    // Set OG tag:
+    $("meta[property='og:title']").prop("content", `Home - Discord Explorer`)
 })
 
 // Error tracking:

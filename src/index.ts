@@ -99,13 +99,52 @@ let featureFlags = {
     backToSidebar: false,
 }
 
-console.log("Enabled feature flags: ", featureFlags)
+console.log("Enabled feature flags ", featureFlags)
 
 let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
 let zenState: "none" | "sidebar" | "content" = "none"
 const currentURL = new URL(window.location.href)
-let cursorsStylesheet: HTMLStyleElement | null = null
+let cursorsStylesheet: HTMLStyleElement = null
+
+const context: {
+    bot?: boolean
+    electron?: boolean
+    prod?: boolean
+    embedded?: boolean
+} = {
+    embedded: false,
+    prod: true,
+    electron: false,
+    bot: false,
+}
+
+const botTest = /bot|googlebot|crawler|spider|robot|crawling/i
+if (botTest.test(navigator.userAgent)) {
+    context.bot = true
+}
+
+if (currentURL.hostname === "localhost") {
+    context.prod = false
+} else if (
+    currentURL.hostname === "discord-explorer.netlify.app" ||
+    currentURL.hostname === "mmk21hub.github.io"
+) {
+    // Definitely production
+    context.prod = true
+} else {
+    try {
+        window.frameElement ? (context.embedded = true) : null
+    } catch (error) {
+        context.embedded = true
+    }
+}
+
+if (typeof process !== "undefined") {
+    context.electron = true
+}
+
+console.log("User context", context)
 
 let corsEverywhere = "https://rocky-castle-55647.herokuapp.com/"
 
@@ -121,7 +160,7 @@ function request(filePath: string) {
     xmlhttp.open("GET", filePath, false)
     xmlhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest")
     xmlhttp.send()
-    if (xmlhttp.status == 200) {
+    if (xmlhttp.status === 200) {
         result = xmlhttp.responseText
     }
     return result
@@ -278,7 +317,7 @@ function loadSidebar() {
         renderChannel(ctx.target.parentElement.dataset.channelId.toString())
         ctx.target.parentElement.setAttribute("selected", "")
 
-        zenState == "sidebar" ? zenContent() : null
+        zenState === "sidebar" ? zenContent() : null
     })
 }
 
@@ -367,25 +406,25 @@ function checkStatuses() {
 
     // MINECRAFT
     $.getJSON(corsEverywhere + "https://status.mojang.com/check", (data) => {
-        if (data[0]["minecraft.net"] != "green") {
+        if (data[0]["minecraft.net"] !== "green") {
             downStatuses.push("minecraft.net")
         }
-        if (data[1]["session.minecraft.net"] != "green") {
+        if (data[1]["session.minecraft.net"] !== "green") {
             downStatuses.push("session.minecraft.net")
         }
-        if (data[2]["account.mojang.com"] != "green") {
+        if (data[2]["account.mojang.com"] !== "green") {
             downStatuses.push("account.mojang.com")
         }
-        if (data[3]["authserver.mojang.com"] != "green") {
+        if (data[3]["authserver.mojang.com"] !== "green") {
             downStatuses.push("authserver.mojang.com")
         }
-        if (data[5]["api.mojang.com"] != "green") {
+        if (data[5]["api.mojang.com"] !== "green") {
             downStatuses.push("api.mojang.com")
         }
-        if (data[6]["textures.minecraft.net"] != "green") {
+        if (data[6]["textures.minecraft.net"] !== "green") {
             downStatuses.push("textures.minecraft.net")
         }
-        if (data[7]["mojang.com"] != "green") {
+        if (data[7]["mojang.com"] !== "green") {
             downStatuses.push("mojang.com")
         }
     })
@@ -394,7 +433,7 @@ function checkStatuses() {
     $.getJSON(
         "https://kctbh9vrtdwd.statuspage.io/api/v2/status.json",
         (data) => {
-            if (data.status.indicator == "major") {
+            if (data.status.indicator === "major") {
                 downStatuses.push("github.com")
             }
         }
@@ -405,7 +444,7 @@ function checkStatuses() {
 
 // Generate a warning in the console if a service reports an outage:
 const statuses = checkStatuses()
-if (statuses.length != 0) {
+if (statuses.length !== 0) {
     /* Might enable this later
     let i
     for (i of statuses) {
@@ -432,18 +471,23 @@ $(() => {
 
     const channelID = currentURL.searchParams.get("channel")
     if (channelID) {
-        let channelFound = false
-        for (let i of channelList) {
-            if (i.id == channelID) {
-                channelFound = true
+        if (!context.bot) {
+            let channelFound = false
+            for (let i of channelList) {
+                if (i.id === channelID) {
+                    channelFound = true
+                }
             }
-        }
-        if (channelFound) {
-            renderChannel(channelID)
-            $(`[data-channel-id=${channelID}]`)[0].setAttribute("selected", "")
-            zenState == "sidebar" ? zenContent() : null
-        } else {
-            console.warn("Invalid channel ID found in URL: " + channelID)
+            if (channelFound) {
+                renderChannel(channelID)
+                $(`[data-channel-id=${channelID}]`)[0].setAttribute(
+                    "selected",
+                    ""
+                )
+                zenState === "sidebar" ? zenContent() : null
+            } else {
+                console.warn("Invalid channel ID found in URL: " + channelID)
+            }
         }
     }
 })
@@ -453,10 +497,11 @@ $(() => {
 // @ts-ignore (Snowpack will handle these imports)
 import * as Sentry from "https://cdn.skypack.dev/@sentry/browser" // @ts-ignore
 import { Integrations } from "https://cdn.skypack.dev/@sentry/tracing"
-
-Sentry.init({
-    dsn:
-        "https://8278aa1a41d548e888b2ba35acba19ff@o557500.ingest.sentry.io/5689818",
-    integrations: [new Integrations.BrowserTracing()],
-    tracesSampleRate: 1.0,
-})
+if (context.prod) {
+    Sentry.init({
+        dsn:
+            "https://8278aa1a41d548e888b2ba35acba19ff@o557500.ingest.sentry.io/5689818",
+        integrations: [new Integrations.BrowserTracing()],
+        tracesSampleRate: 1.0,
+    })
+}

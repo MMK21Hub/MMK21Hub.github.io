@@ -69,6 +69,11 @@ interface emoji {
     imageUrl: string
 }
 
+interface channel {
+    id: string
+    name: string
+}
+
 /* ===========   
     VARIABLES    
    =========== */
@@ -83,16 +88,7 @@ const helpTooltips = {
 }
 
 // Channels:
-const channelList = [
-    {
-        id: "727912383833702411",
-        name: "general",
-    },
-    {
-        id: "793448224353550346",
-        name: "mind-is-tree",
-    },
-]
+let channelList: channel[] = null
 
 // Enabled features:
 let featureFlags = {
@@ -253,6 +249,24 @@ function renderMessage(msg: message, chunkElement: HTMLElement) {
    ================ */
 
 function loadSidebar() {
+    // Load the channel list
+    $.getJSON(
+        "https://raw.githubusercontent.com/MMK21Hub/discord-channels/master/servers/knowledge-base/current/index.json",
+        (channelList) => {
+            // Create the sidebar items
+            $("#left-menu").append($('<ul id="channels"></ul>'))
+            for (const channel of channelList) {
+                let button = $(`
+                <li class="sidebar-item">
+                    <a class="channel-label" href="?channel=${channel.id}"> ${channel.name} </a>
+                </li>
+                `)
+                button[0].dataset.channelId = channel.id
+                $("#channels").append(button)
+            }
+        }
+    )
+
     // Create the sidebar items
     $("#left-menu").append($('<ul id="channels"></ul>'))
     for (const channel of channelList) {

@@ -34,6 +34,7 @@
         <h1>Discord Explorer</h1>
       </div>
       <div class="primary-box" id="main-content">
+        <div class="noscript" id="enable-js">Please enable Javascript to use Discord Explorer.</div>
         <div id="progress"></div>
         <div id="chatlog"></div>
       </div>
@@ -46,5 +47,8 @@
     --cursor-pointer: pointer;
   }
 </style>
+<script>
+  document.querySelectorAll(".noscript").forEach((x) => { x.style.display = "none" })
+</script>
 
 </html>

@@ -267,18 +267,6 @@ function loadSidebar() {
         }
     )
 
-    // Create the sidebar items
-    $("#left-menu").append($('<ul id="channels"></ul>'))
-    for (const channel of channelList) {
-        let button = $(`
-            <li class="sidebar-item">
-                <a class="channel-label" href="?channel=${channel.id}"> ${channel.name} </a>
-            </li>
-        `)
-        button[0].dataset.channelId = channel.id
-        $("#channels").append(button)
-    }
-
     // Add the event listeners
     $(".sidebar-item").on("click", (ctx) => {
         overrideClick(ctx)

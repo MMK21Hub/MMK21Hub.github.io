@@ -181,6 +181,50 @@ function overrideClick(event: any) {
     MESSAGE RENDERING    
    =================== */
 
+/** Gets the channel list then calls checkURL() and loadSidebar() */
+function getChannelList() {
+    $.getJSON(
+        "https://raw.githubusercontent.com/MMK21Hub/discord-channels/master/servers/knowledge-base/current/index.json",
+        (data) => {
+            channelList = data
+            loadSidebar()
+            checkURL()
+        }
+    )
+}
+
+/** If there's a channel ID specified in the URL params, load that channel. */
+function checkURL() {
+    // Load a channel from the URL
+    const channelID = currentURL.searchParams.get("channel")
+    if (channelID) {
+        let channel = null
+        for (let i of channelList) {
+            if (i.id === channelID) {
+                channel = i
+            }
+        }
+        if (channel) {
+            if (!context.bot) {
+                renderChannel(channelID)
+                $(`[data-channel-id=${channelID}]`)[0].setAttribute(
+                    "selected",
+                    ""
+                )
+                zenState === "sidebar" ? zenContent() : null
+            }
+
+            // Update OG tags:
+            $("meta[property='og:title']").prop(
+                "content",
+                `${channel.name} - Discord Explorer`
+            )
+        } else {
+            console.warn("Invalid channel ID found in URL: " + channelID)
+        }
+    }
+}
+
 /** Get a saved Discord channel and give it to `renderContent()` */
 const renderChannel = async (id: string) => {
     currentURL.searchParams.set("channel", id.toString())
@@ -290,25 +334,19 @@ function renderMessage(msg: message, chunkElement: HTMLElement) {
    ================ */
 
 function loadSidebar() {
-    // Load the channel list
-    $.getJSON(
-        "https://raw.githubusercontent.com/MMK21Hub/discord-channels/master/servers/knowledge-base/current/index.json",
-        (channelList) => {
-            // Create the sidebar items
-            $("#left-menu").append($('<ul id="channels"></ul>'))
-            for (const channel of channelList) {
-                let button = $(`
+    // Create the sidebar items
+    $("#left-menu").append($('<ul id="channels"></ul>'))
+    for (const channel of channelList) {
+        let button = $(`
                 <li class="sidebar-item">
                     <a class="channel-label" href="?channel=${channel.id}"> ${channel.name} </a>
                 </li>
                 `)
-                button[0].dataset.channelId = channel.id
-                $("#channels").append(button)
-            }
+        button[0].dataset.channelId = channel.id
+        $("#channels").append(button)
+    }
 
-            $("#sidebar-loading").hide()
-        }
-    )
+    $("#sidebar-loading").hide()
 
     // Add the event listeners
     $(".sidebar-item").on("click", (ctx) => {
@@ -465,38 +503,9 @@ if (statuses.length !== 0) {
 $(() => {
     $(window).on("resize", fixViewport)
     fixViewport()
-    loadSidebar()
+    getChannelList()
 
     cursorsStylesheet = document.querySelector("style#cursors")
-
-    // Load a channel from the URL
-    const channelID = currentURL.searchParams.get("channel")
-    if (channelID) {
-        let channel = null
-        for (let i of channelList) {
-            if (i.id === channelID) {
-                channel = i
-            }
-        }
-        if (channel) {
-            if (!context.bot) {
-                renderChannel(channelID)
-                $(`[data-channel-id=${channelID}]`)[0].setAttribute(
-                    "selected",
-                    ""
-                )
-                zenState === "sidebar" ? zenContent() : null
-            }
-
-            // Update OG tags:
-            $("meta[property='og:title']").prop(
-                "content",
-                `${channel.name} - Discord Explorer`
-            )
-        } else {
-            console.warn("Invalid channel ID found in URL: " + channelID)
-        }
-    }
 
     // Set OG tag:
     $("meta[property='og:title']").prop("content", `Home - Discord Explorer`)

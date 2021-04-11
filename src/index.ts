@@ -264,6 +264,8 @@ function loadSidebar() {
                 button[0].dataset.channelId = channel.id
                 $("#channels").append(button)
             }
+
+            $("#sidebar-loading").hide()
         }
     )
 

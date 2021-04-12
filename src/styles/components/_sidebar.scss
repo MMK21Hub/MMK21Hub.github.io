@@ -1,6 +1,14 @@
+@use "discord"as *;
+
 .sidebar {
-    background-color: var(--background-secondary);
-    grid-area: sidebar;
+    background-color: $background-secondary;
+
+    width: 240px;
+
+    @supports (display: grid) {
+        grid-area: sidebar;
+        width: unset
+    }
 }
 
 #sidebar-loading {
@@ -21,21 +29,21 @@
 
     .channel-label {
         padding: 6px 0;
-        cursor: var(--cursor-pointer);
+        cursor: var(cursor-pointer);
         display: block;
-        color: var(--channels-default);
+        color: $channels-default;
         text-decoration: none;
     }
 }
 
 .sidebar-item[selected] {
-    background: var(--background-modifier-selected)
+    background: $background-modifier-selected;
 }
 
 .sidebar-item:hover {
-    background: var(--background-modifier-hover)
+    background: $background-modifier-hover;
 }
 
 .sidebar-item:active {
-    background: var(--background-modifier-active)
+    background: $background-modifier-active;
 }

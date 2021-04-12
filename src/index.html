@@ -47,12 +47,14 @@
 </body>
 
 <style id="cursors">
-  body {
-    --cursor-pointer: pointer;
+  @supports (cursor: var(--cursor-pointer)) {
+    body {
+      --cursor-pointer: pointer;
+    }
   }
 </style>
 <script>
-  document.querySelectorAll(".noscript").forEach((x) => { x.style.display = "none" })
+
 </script>
 
 </html>

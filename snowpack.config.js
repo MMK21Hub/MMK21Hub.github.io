@@ -15,10 +15,19 @@ module.exports = {
             },
         ],
         //"@snowpack/plugin-typescript",
+        [
+            "@snowpack/plugin-webpack",
+            {
+                sourceMap: true,
+            },
+        ],
     ],
     packageOptions: { sourceMap: true },
     devOptions: {},
     buildOptions: {
         out: "dist",
+    },
+    optimize: {
+        sourcemap: "external",
     },
 }

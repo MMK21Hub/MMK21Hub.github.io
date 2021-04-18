@@ -501,10 +501,6 @@ if (statuses.length !== 0) {
 
 // THINGS TO DO WHEN THE DOM IS READY
 $(() => {
-    document.querySelectorAll(".noscript").forEach(function (elem) {
-        elem.style.display = "none"
-    })
-
     $(window).on("resize", fixViewport)
     fixViewport()
     getChannelList()

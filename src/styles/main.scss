@@ -9,14 +9,18 @@
 /* GENERAL STUFF */
 html,
 body {
-    height: 100%;
+    height: 100vh;
 }
 
-body {
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
     margin: 0;
 }
 
 #app {
+    background-color: $background-primary;
     color: $text-normal;
     height: inherit;
     overflow: hidden;
@@ -31,29 +35,13 @@ body {
 
 /* LAYOUT */
 #inner-box {
-    /* Without grid support: */
-    display: table;
-
-    @supports (display: grid) {
-        display: grid;
-        grid-template-columns: 240px auto;
-        grid-template-areas: "sidebar main";
-    }
-
-    background-color: $background-primary;
     height: 100%;
     width: 100%;
     margin: auto;
-    box-sizing: border-box;
 }
 
 .primary-box {
     padding: 8px;
-    display: table-cell;
-
-    @supports (display: grid) {
-        display: initial;
-    }
 }
 
 #chatlog {
@@ -62,8 +50,4 @@ body {
     height: 100px;
     overflow: auto;
     display: none;
-}
-
-#main-content {
-    grid-area: main;
 }

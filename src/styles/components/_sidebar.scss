@@ -2,13 +2,7 @@
 
 .sidebar {
     background-color: $background-secondary;
-
     width: 240px;
-
-    @supports (display: grid) {
-        grid-area: sidebar;
-        width: unset
-    }
 }
 
 #sidebar-loading {

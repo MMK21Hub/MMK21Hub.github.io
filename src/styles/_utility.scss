@@ -1,0 +1,13 @@
+.columns {
+    display: flex;
+    flex-direction: row;
+
+    &>* {
+        width: 100%;
+    }
+
+    .fixed {
+        flex-shrink: 0;
+        flex-grow: 0;
+    }
+}

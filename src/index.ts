@@ -368,12 +368,6 @@ function fixViewport() {
     } else if ($(window).width() > 600) {
         zenNone()
     }
-
-    if ($("#main-content").width() < 650) {
-        $("#chatlog").addClass("fullwidth")
-    } else {
-        $("#chatlog").removeClass("fullwidth")
-    }
 }
 
 function zenSidebar() {

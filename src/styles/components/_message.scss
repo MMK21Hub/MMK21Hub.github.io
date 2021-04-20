@@ -5,9 +5,14 @@
     padding-bottom: .125rem;
     padding-right: 48px;
     margin: 10px 0px;
-}
 
-#chatlog.fullwidth .message-card {
-    padding-left: 10px;
-    padding-right: 0;
+    @media screen and (max-width: calc(650px + 240px)) {
+        padding-left: 10px;
+        padding-right: 0;
+    }
+
+    @container (max-width: 650px) {
+        padding-left: 10px;
+        padding-right: 0;
+    }
 }

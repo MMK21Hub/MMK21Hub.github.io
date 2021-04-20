@@ -11,3 +11,7 @@
         flex-grow: 0;
     }
 }
+
+.contain {
+    contain: layout inline-size;
+}

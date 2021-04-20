@@ -362,8 +362,6 @@ function loadSidebar() {
 function fixViewport() {
     //let correctHeightChatlog = $("#main-content").height() - 25
     //$("#chatlog").css("height", correctHeightChatlog.toString() + "px")
-    $("#left-menu").css("height", window.innerHeight.toString() + "px")
-    $("#chatlog").css("height", (window.innerHeight - 40).toString() + "px")
 
     if ($(window).width() < 600 && zenState !== "content") {
         zenSidebar()

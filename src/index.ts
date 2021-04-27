@@ -482,7 +482,7 @@ $(() => {
 
     // Low Priority: Generate a warning in the console if a service reports an outage:
     const statuses = checkStatuses()
-    if (statuses) {
+    if (!statuses) {
         console.warn(
             "One or more services are reporting degraded performance or an outage.",
             statuses

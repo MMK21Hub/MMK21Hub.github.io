@@ -360,9 +360,6 @@ function loadSidebar() {
 }
 
 function fixViewport() {
-    //let correctHeightChatlog = $("#main-content").height() - 25
-    //$("#chatlog").css("height", correctHeightChatlog.toString() + "px")
-
     if ($(window).width() < 600 && zenState !== "content") {
         zenSidebar()
     } else if ($(window).width() > 600) {
@@ -472,25 +469,6 @@ function checkStatuses() {
     return downStatuses
 }
 
-// Generate a warning in the console if a service reports an outage:
-const statuses = checkStatuses()
-if (statuses.length !== 0) {
-    /* Might enable this later
-    let i
-    for (i of statuses) {
-        if (i == "github.io") {
-            console.warn(
-                "Github Pages is reporting reduced performance. You may experience slow load times or server errors."
-            )
-        }
-    }
-    */
-    console.warn(
-        "One or more services are reporting degraded performance or an outage.",
-        statuses
-    )
-}
-
 // THINGS TO DO WHEN THE DOM IS READY
 $(() => {
     $(window).on("resize", fixViewport)
@@ -501,6 +479,15 @@ $(() => {
 
     // Set OG tag:
     $("meta[property='og:title']").prop("content", `Home - Discord Explorer`)
+
+    // Low Priority: Generate a warning in the console if a service reports an outage:
+    const statuses = checkStatuses()
+    if (statuses) {
+        console.warn(
+            "One or more services are reporting degraded performance or an outage.",
+            statuses
+        )
+    }
 })
 
 // Error tracking:

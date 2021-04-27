@@ -2,6 +2,9 @@
     "compilerOptions": {
         "outDir": "./dist/",
         "noImplicitAny": true,
+        "strict": true,
+        "inlineSourceMap": true,
+        "removeComments": true,
         "module": "es6",
         "target": "es5",
         "jsx": "react",

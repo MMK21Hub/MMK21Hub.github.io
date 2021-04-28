@@ -88,7 +88,7 @@ const helpTooltips = {
 }
 
 // Channels:
-let channelList: channel[] = null
+let channelList: channel[] | null = null
 
 // Enabled features:
 let featureFlags = {
@@ -105,7 +105,7 @@ let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
 let zenState: "none" | "sidebar" | "content" = "none"
 const currentURL = new URL(window.location.href)
-let cursorsStylesheet: HTMLStyleElement = null
+let cursorsStylesheet: HTMLStyleElement | null = null
 
 const context: {
     bot?: boolean
@@ -228,7 +228,7 @@ function checkURL() {
 /** Get a saved Discord channel and give it to `renderContent()` */
 const renderChannel = async (id: string) => {
     currentURL.searchParams.set("channel", id.toString())
-    history.replaceState(null, null, currentURL.search) // Update the URL
+    history.replaceState(null, "", currentURL.search) // Update the URL
     $("#chatlog") // Reset the chatlog before rendering the new messages
         .html("")
         .scrollTop(0)
@@ -250,9 +250,9 @@ const renderChannel = async (id: string) => {
 
     console.log(`Getting and parsing the JSON took ${Math.round(duration)}ms`)
     renderContent(channelData.messages)
-    for (let i in channelList) {
-        if (channelList[i].id === id) {
-            document.title = `#${channelList[i].name} - Discord Explorer`
+    for (let channel of channelList) {
+        if (channel.id === id) {
+            document.title = `#${channel.name} - Discord Explorer`
         }
     }
     $("body").css("cursor", "")

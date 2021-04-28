@@ -99,52 +99,13 @@ let featureFlags = {
     backToSidebar: false,
 }
 
-console.log("Enabled feature flags ", featureFlags)
-
 let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
 let zenState: "none" | "sidebar" | "content" = "none"
 const currentURL = new URL(window.location.href)
 let cursorsStylesheet: HTMLStyleElement | null = null
 
-const context: {
-    bot?: boolean
-    electron?: boolean
-    prod?: boolean
-    embedded?: boolean
-} = {
-    embedded: false,
-    prod: true,
-    electron: false,
-    bot: false,
-}
-
-const botTest = /bot|googlebot|crawler|spider|robot|crawling/i
-if (botTest.test(navigator.userAgent)) {
-    context.bot = true
-}
-
-if (currentURL.hostname === "localhost") {
-    context.prod = false
-} else if (
-    currentURL.hostname === "discord-explorer.netlify.app" ||
-    currentURL.hostname === "mmk21hub.github.io"
-) {
-    // Definitely production
-    context.prod = true
-} else {
-    try {
-        window.frameElement ? (context.embedded = true) : null
-    } catch (error) {
-        context.embedded = true
-    }
-}
-
-if (typeof process !== "undefined") {
-    context.electron = true
-}
-
-console.log("User context", context)
+const context = checkContext()
 
 let corsEverywhere = "https://rocky-castle-55647.herokuapp.com/"
 
@@ -469,6 +430,44 @@ function checkStatuses() {
     return downStatuses
 }
 
+/** Get some information about the user accessing the site */
+function checkContext() {
+    const context = {
+        embedded: false,
+        prod: true,
+        electron: false,
+        bot: false,
+    }
+
+    const botTest = /bot|googlebot|crawler|spider|robot|crawling/i
+
+    if (botTest.test(navigator.userAgent)) {
+        context.bot = true
+    }
+
+    if (currentURL.hostname === "localhost") {
+        context.prod = false
+    } else if (
+        currentURL.hostname === "discord-explorer.netlify.app" ||
+        currentURL.hostname === "mmk21hub.github.io"
+    ) {
+        // Definitely production
+        context.prod = true
+    } else {
+        try {
+            window.frameElement ? (context.embedded = true) : null
+        } catch (error) {
+            context.embedded = true
+        }
+    }
+
+    if (typeof process !== "undefined") {
+        context.electron = true
+    }
+
+    return context
+}
+
 // THINGS TO DO WHEN THE DOM IS READY
 $(() => {
     $(window).on("resize", fixViewport)
@@ -479,6 +478,10 @@ $(() => {
 
     // Set OG tag:
     $("meta[property='og:title']").prop("content", `Home - Discord Explorer`)
+
+    // Print some debug info
+    console.log("User context", context)
+    console.log("Enabled feature flags", featureFlags)
 
     // Low Priority: Generate a warning in the console if a service reports an outage:
     const statuses = checkStatuses()

@@ -101,6 +101,9 @@ let featureFlags = {
 
 let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
+// currentChunk is `null` because no channel is loaded yet:
+let currentChunk: null | number = null
+
 let zenState: "none" | "sidebar" | "content" = "none"
 const currentURL = new URL(window.location.href)
 let cursorsStylesheet: HTMLStyleElement | null = null
@@ -156,34 +159,41 @@ function getChannelList() {
 
 /** If there's a channel ID specified in the URL params, load that channel. */
 function checkURL() {
-    // Load a channel from the URL
-    const channelID = currentURL.searchParams.get("channel")
-    if (channelID) {
-        let channel = null
-        for (let i of channelList) {
-            if (i.id === channelID) {
-                channel = i
-            }
-        }
-        if (channel) {
-            if (!context.bot) {
-                renderChannel(channelID)
-                $(`[data-channel-id=${channelID}]`)[0].setAttribute(
-                    "selected",
-                    ""
-                )
-                zenState === "sidebar" ? zenContent() : null
-            }
+    if (!channelList)
+        return console.error(
+            "The channel list hasn't loaded for some reason; expect bugs."
+        )
 
-            // Update OG tags:
-            $("meta[property='og:title']").prop(
-                "content",
-                `${channel.name} - Discord Explorer`
-            )
-        } else {
-            console.warn("Invalid channel ID found in URL: " + channelID)
+    // Check if there's a `channel` URL parameter in the current URL
+    const channelID = currentURL.searchParams.get("channel")
+    if (!channelID) return
+
+    /** Represents the channel from the URL that needs to be loaded.
+     * If `undefined`, there is no channel to match the channel ID in the URL */
+    let channel: channel | undefined
+
+    // Return if the channel ID does not match an actual channel
+    for (let i of channelList) {
+        if (i.id === channelID) {
+            channel = i
         }
     }
+    if (!channel) {
+        console.warn("Invalid channel ID found in URL: " + channelID)
+        return
+    }
+
+    if (!context.bot) {
+        renderChannel(channelID)
+        $(`[data-channel-id=${channelID}]`)[0].setAttribute("selected", "")
+        zenState === "sidebar" ? zenContent() : null
+    }
+
+    // Update OG tags:
+    $("meta[property='og:title']").prop(
+        "content",
+        `${channel.name} - Discord Explorer`
+    )
 }
 
 /** Get a saved Discord channel and give it to `renderContent()` */
@@ -220,40 +230,42 @@ const renderChannel = async (id: string) => {
     cursorsStylesheet.sheet.deleteRule(rule)
 }
 
-/** Split an array of messages into chunks and give it to `renderChunk()` */
+/** Split an array of messages into chunks and give it to `renderChunk()`
+ * TODO: The actual chunking probably needs to be split off form the other logic
+ */
 const renderContent = async (messages: []) => {
-    var chunkedMessages = []
-    if (messages.length >= 100) {
-        // Split the array into chunks if it's big
-        let chunks = Math.ceil(messages.length / 100)
-        var i: number
-        for (i = 0; i < chunks; i++) {
-            chunkedMessages.push(messages.slice(i * 100, i * 100 + 100))
-        }
-        console.log(
-            "Split " +
-                messages.length +
-                " messages into " +
-                chunkedMessages.length +
-                " chunks"
-        )
-    } else {
-        // Put the whole thing into one chunk if it's not big
-        chunkedMessages = [messages]
+    let chunkedMessages: any[] = []
+
+    if (!(messages.length > 100)) {
+        // Put the whole channel into one chunk if it's not big
+        // TODO: On paper, we shouldn't need this check?
+        currentChannel.data = [messages]
+
+        renderChunk(0) // Render the first chunk
     }
+
+    // Split the array into chunks if it's big
+    let chunks = Math.ceil(messages.length / 100)
+    var i
+    for (i = 0; i < chunks; i++) {
+        chunkedMessages.push(messages.slice(i * 100, i * 100 + 100))
+    }
+    console.log(
+        "Split " +
+            messages.length +
+            " messages into " +
+            chunkedMessages.length +
+            " chunks"
+    )
     currentChannel.data = chunkedMessages
 
-    let currentChunk = 0
-    let chunk
-    chunk = chunkedMessages[currentChunk]
-
-    // Render the first chunk:
-    renderChunk(0)
-    $("#chatlog").show()
+    const chunk = chunkedMessages[currentChunk]
+    renderChunk(0) // Render the first chunk
 }
 
 /** Give each message from a chunk to `renderMessage()` */
 function renderChunk(chunkIndex: number) {
+    currentChunk = chunkIndex
     const chunk: Array<message> = currentChannel.data[chunkIndex]
 
     let chunkDiv = document.createElement("div")

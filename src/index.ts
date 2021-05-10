@@ -374,18 +374,15 @@ function zenNone() {
 let loadingMessages = false
 $("#chatlog").on("scroll", function () {
     if (loadedChunks >= currentChannel.data.length) return
+    if (loadingMessages) return
+
     const scrollPosition = $("#chatlog").scrollTop()
     const fullHeight = document.getElementById("chatlog").scrollHeight
     const height = $("#chatlog").height()
     const scrollPercent = (scrollPosition / (fullHeight - height)) * 100
+    const threshold = calculateThreshold()
 
-    let threshold = 95
-    if (loadedChunks >= 10) {
-        threshold = 99
-    } else if (loadedChunks >= 20) {
-        threshold = 100
-    }
-    if (scrollPercent >= 95 && !loadingMessages) {
+    if (scrollPercent >= threshold) {
         loadingMessages = true
         renderChunk(loadedChunks)
         setTimeout(() => {
@@ -393,6 +390,17 @@ $("#chatlog").on("scroll", function () {
         }, 10)
     }
 })
+
+function calculateThreshold() {
+    if (loadedChunks >= 10) {
+        return 99
+    }
+    if (loadedChunks >= 20) {
+        return 100
+    }
+
+    return 95
+}
 
 /* ============   
     OTHER BITS    
@@ -457,20 +465,22 @@ function checkContext() {
         context.bot = true
     }
 
-    if (currentURL.hostname === "localhost") {
-        context.prod = false
-    } else if (
-        currentURL.hostname === "discord-explorer.netlify.app" ||
-        currentURL.hostname === "mmk21hub.github.io"
-    ) {
-        // Definitely production
-        context.prod = true
-    } else {
-        try {
-            window.frameElement ? (context.embedded = true) : null
-        } catch (error) {
-            context.embedded = true
-        }
+    switch (currentURL.hostname) {
+        case "localhost":
+            context.prod = false
+            break
+        case "discord-explorer.netlify.app":
+        case "mmk21hub.github.io":
+            context.prod = true
+            break
+        default:
+            // Not being accessed form an official URL: is it in a frame?
+            try {
+                window.frameElement ? (context.embedded = true) : null
+            } catch (error) {
+                context.embedded = true
+            }
+            break
     }
 
     if (typeof process !== "undefined") {

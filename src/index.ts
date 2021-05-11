@@ -198,6 +198,11 @@ function checkURL() {
 
 /** Get a saved Discord channel and give it to `renderContent()` */
 const renderChannel = async (id: string) => {
+    if (!channelList)
+        return console.error(
+            "The channel list hasn't loaded for some reason; expect bugs."
+        )
+
     currentURL.searchParams.set("channel", id.toString())
     history.replaceState(null, "", currentURL.search) // Update the URL
     $("#chatlog") // Reset the chatlog before rendering the new messages
@@ -234,6 +239,11 @@ const renderChannel = async (id: string) => {
  * TODO: The actual chunking probably needs to be split off form the other logic
  */
 const renderContent = async (messages: []) => {
+    if (!currentChunk)
+        return console.error(
+            "renderContent() has been called while currentChunk is null."
+        )
+
     let chunkedMessages: any[] = []
 
     if (!(messages.length > 100)) {
@@ -265,8 +275,13 @@ const renderContent = async (messages: []) => {
 
 /** Give each message from a chunk to `renderMessage()` */
 function renderChunk(chunkIndex: number) {
+    if (!currentChannel.data)
+        return console.error(
+            "currentChannel.data is not available, so chunk loading has been aborted."
+        )
+
     currentChunk = chunkIndex
-    const chunk: Array<message> = currentChannel.data[chunkIndex]
+    const chunk: message[] = currentChannel.data[chunkIndex]
 
     let chunkDiv = document.createElement("div")
     chunkDiv.setAttribute("class", "chunk")
@@ -323,6 +338,26 @@ function loadSidebar() {
 
     // Add the event listeners
     $(".sidebar-item").on("click", (ctx) => {
+        if (!ctx.target?.parentElement?.dataset.channelId) {
+            if (!ctx.target.parentElement) {
+                return console.error(
+                    "The sidebar item doesn't seem to have a parent - breaking DOM change?",
+                    ctx.target
+                )
+            }
+            if (!ctx.target.parentElement.dataset.channelID) {
+                return console.error(
+                    "The sidebar item's parent doesn't seem to have the `data-channel-id` property - breaking DOM change?",
+                    ctx.target
+                )
+            }
+
+            return console.error(
+                "Something's wrong with the sidebar item event listener.",
+                ctx
+            )
+        }
+
         overrideClick(ctx)
         $(".sidebar-item[selected]").attr("selected", null)
         renderChannel(ctx.target.parentElement.dataset.channelId.toString())
@@ -372,13 +407,26 @@ function zenNone() {
 
 // Lazy loading of message chunks:
 let loadingMessages = false
+let lazyLoadingFailed = false
 $("#chatlog").on("scroll", function () {
+    if (!currentChannel.data) {
+        lazyLoadingFailed = true
+        if (lazyLoadingFailed) return
+        return console.error(
+            "currentChannel.data is not available for some reason."
+        )
+    }
     if (loadedChunks >= currentChannel.data.length) return
     if (loadingMessages) return
 
-    const scrollPosition = $("#chatlog").scrollTop()
-    const fullHeight = document.getElementById("chatlog").scrollHeight
-    const height = $("#chatlog").height()
+    const chatlog = document.querySelector("#chatlog")
+    if (!chatlog)
+        return console.error(
+            "No element with the ID `chatlog` - breaking DOM change?"
+        )
+    const scrollPosition = chatlog.scrollTop
+    const fullHeight = chatlog.scrollHeight
+    const height = chatlog.clientHeight
     const scrollPercent = (scrollPosition / (fullHeight - height)) * 100
     const threshold = calculateThreshold()
 
@@ -467,6 +515,7 @@ function checkContext() {
 
     switch (currentURL.hostname) {
         case "localhost":
+        case "127.0.0.1":
             context.prod = false
             break
         case "discord-explorer.netlify.app":
@@ -497,6 +546,7 @@ $(() => {
     getChannelList()
 
     cursorsStylesheet = document.querySelector("style#cursors")
+    const a = 1
 
     // Set OG tag:
     $("meta[property='og:title']").prop("content", `Home - Discord Explorer`)

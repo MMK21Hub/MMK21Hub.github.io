@@ -104,7 +104,6 @@ let loadedChunks = 0
 // currentChunk is `null` because no channel is loaded yet:
 let currentChunk: null | number = null
 
-let zenState: "none" | "sidebar" | "content" = "none"
 const currentURL = new URL(window.location.href)
 let cursorsStylesheet: HTMLStyleElement | null = null
 
@@ -186,7 +185,6 @@ function checkURL() {
     if (!context.bot) {
         renderChannel(channelID)
         $(`[data-channel-id=${channelID}]`)[0].setAttribute("selected", "")
-        zenState === "sidebar" ? zenContent() : null
     }
 
     // Update OG tags:
@@ -239,11 +237,6 @@ const renderChannel = async (id: string) => {
  * TODO: The actual chunking probably needs to be split off form the other logic
  */
 const renderContent = async (messages: []) => {
-    if (!currentChunk)
-        return console.error(
-            "renderContent() has been called while currentChunk is null."
-        )
-
     let chunkedMessages: any[] = []
 
     if (!(messages.length > 100)) {
@@ -269,7 +262,6 @@ const renderContent = async (messages: []) => {
     )
     currentChannel.data = chunkedMessages
 
-    const chunk = chunkedMessages[currentChunk]
     renderChunk(0) // Render the first chunk
 }
 
@@ -296,7 +288,6 @@ function renderChunk(chunkIndex: number) {
     }
     loadedChunks = loadedChunks + 1
 
-    fixViewport()
     console.log(
         "Finished rendering chunk " +
             chunkIndex +
@@ -362,48 +353,10 @@ function loadSidebar() {
         $(".sidebar-item[selected]").attr("selected", null)
         renderChannel(ctx.target.parentElement.dataset.channelId.toString())
         ctx.target.parentElement.setAttribute("selected", "")
-
-        zenState === "sidebar" ? zenContent() : null
     })
 }
 
-function fixViewport() {
-    if ($(window).width() < 600 && zenState !== "content") {
-        zenSidebar()
-    } else if ($(window).width() > 600) {
-        zenNone()
-    }
-}
-
-function zenSidebar() {
-    if (zenState !== "sidebar") {
-        $("#inner-box").css("grid-template-areas", '"sidebar"')
-        $("#inner-box").css("grid-template-columns", "unset")
-        $("#main-content").hide()
-        $("#left-menu").show()
-        zenState = "sidebar"
-    }
-}
-
-function zenContent() {
-    if (zenState !== "content") {
-        $("#inner-box").css("grid-template-areas", '"main"')
-        $("#inner-box").css("grid-template-columns", "unset")
-        $("#left-menu").hide()
-        $("#main-content").show()
-        zenState = "content"
-    }
-}
-
-function zenNone() {
-    if (zenState !== "none") {
-        $("#inner-box").css("grid-template-areas", "")
-        $("#inner-box").css("grid-template-columns", "")
-        $("#left-menu").show()
-        $("#main-content").show()
-        zenState = "none"
-    }
-}
+//here
 
 // Lazy loading of message chunks:
 let loadingMessages = false
@@ -541,8 +494,6 @@ function checkContext() {
 
 // THINGS TO DO WHEN THE DOM IS READY
 $(() => {
-    $(window).on("resize", fixViewport)
-    fixViewport()
     getChannelList()
 
     cursorsStylesheet = document.querySelector("style#cursors")

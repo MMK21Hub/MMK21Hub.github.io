@@ -14,7 +14,7 @@ Include any extra info in the extended commit message.
 We have a set of emoji that you can use in your commit message, loosely based on [Gitmoji](https://gitmoji.dev/). They represent the type of commit that you've made.
 Please only use one emoji per commit, and insert a space after the emoji.
 
-Here is a list of emoji. THe most specific ones are at the top.
+Here is a list of emoji. The most specific ones are at the top.
 
 | Emoji                     | Meaning                                    |
 | ------------------------- | ------------------------------------------ |

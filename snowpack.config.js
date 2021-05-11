@@ -6,6 +6,7 @@ module.exports = {
     root: "/src",
     mount: {
         src: "/",
+        lib: "/lib",
     },
     plugins: [
         [
@@ -22,8 +23,10 @@ module.exports = {
             },
         ],
     ],
-    packageOptions: { sourceMap: true },
-    devOptions: {},
+    packageOptions: { sourcemap: true },
+    devOptions: {
+        hmr: true,
+    },
     buildOptions: {
         out: "dist",
     },

@@ -11,6 +11,7 @@ Author: MMK21 & contributors
 
 == Contents ==
  - Typescript Stuff
+ - Imports
  - Variables
  - Functions
  - Message Rendering
@@ -18,6 +19,19 @@ Author: MMK21 & contributors
  - Other Bits
 
 */
+
+/* =========   
+    IMPORTS    
+   ========= */
+
+// Snowpack will handle these imports, but TS doesn't support URL imports yet.
+// For now we have to `ts-ignore` them.
+// @ts-ignore
+import contextKeys from "https://cdn.skypack.dev/context-keys"
+// @ts-ignore
+import * as Sentry from "https://cdn.skypack.dev/@sentry/browser"
+// @ts-ignore
+import { Integrations } from "https://cdn.skypack.dev/pin/@sentry/tracing@v6.3.6-72C9F2EYsOnu6XdC01yr/mode=imports,min/optimized/@sentry/tracing.js"
 
 /* ==================   
     TYPESCRIPT STUFF    
@@ -313,6 +327,11 @@ function renderMessage(msg: message, chunkElement: HTMLElement) {
    ================ */
 
 function loadSidebar() {
+    if (!channelList)
+        return console.error(
+            "The channel list hasn't loaded for some reason; expect bugs."
+        )
+
     // Create the sidebar items
     $("#left-menu").append($('<ul id="channels"></ul>'))
     for (const channel of channelList) {
@@ -518,13 +537,9 @@ $(() => {
 
 // Error tracking:
 // https://sentry.io/organizations/mmk21
-// @ts-ignore (Snowpack will handle these imports)
-import * as Sentry from "https://cdn.skypack.dev/@sentry/browser" // @ts-ignore
-import { Integrations } from "https://cdn.skypack.dev/@sentry/tracing"
 if (context.prod) {
     Sentry.init({
-        dsn:
-            "https://8278aa1a41d548e888b2ba35acba19ff@o557500.ingest.sentry.io/5689818",
+        dsn: "https://8278aa1a41d548e888b2ba35acba19ff@o557500.ingest.sentry.io/5689818",
         integrations: [new Integrations.BrowserTracing()],
         tracesSampleRate: 1.0,
     })

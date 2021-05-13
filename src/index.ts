@@ -24,18 +24,30 @@ Author: MMK21 & contributors
     IMPORTS    
    ========= */
 
+import { ContextKeys } from "./context-keys"
+
 // Snowpack will handle these imports, but TS doesn't support URL imports yet.
 // For now we have to `ts-ignore` them.
+// P.S. The scary URLs are called 'pinned' URLs; Skypack generates them for us.
 // @ts-ignore
-import contextKeys from "https://cdn.skypack.dev/context-keys"
+import contextKeys from "https://cdn.skypack.dev/pin/context-keys@v3.1.0-p8ds1ae5xyZAdYHlICUO/mode=imports,min/optimized/context-keys.js"
 // @ts-ignore
-import * as Sentry from "https://cdn.skypack.dev/@sentry/browser"
+import * as Sentry from "https://cdn.skypack.dev/pin/@sentry/browser@v6.3.6-WidkolDfgWFbwsjpgQsM/mode=imports,min/optimized/@sentry/browser.js"
 // @ts-ignore
 import { Integrations } from "https://cdn.skypack.dev/pin/@sentry/tracing@v6.3.6-72C9F2EYsOnu6XdC01yr/mode=imports,min/optimized/@sentry/tracing.js"
 
 /* ==================   
     TYPESCRIPT STUFF    
    ================== */
+
+declare global {
+    interface Window {
+        /** Context Keys base object
+         * @see https://github.com/fabiospampinato/context-keys
+         */
+        ck: ContextKeys
+    }
+}
 
 interface message {
     id: string
@@ -112,6 +124,9 @@ let featureFlags = {
     progressBar: false,
     backToSidebar: false,
 }
+
+/** Shorthand to the `window` object */
+let w = window
 
 let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
@@ -215,6 +230,7 @@ const renderChannel = async (id: string) => {
             "The channel list hasn't loaded for some reason; expect bugs."
         )
 
+    w.ck.set("channelLoading", true)
     currentURL.searchParams.set("channel", id.toString())
     history.replaceState(null, "", currentURL.search) // Update the URL
     $("#chatlog") // Reset the chatlog before rendering the new messages
@@ -238,6 +254,9 @@ const renderChannel = async (id: string) => {
 
     console.log(`Getting and parsing the JSON took ${Math.round(duration)}ms`)
     renderContent(channelData.messages)
+
+    w.ck.set("channelLoading", false)
+    w.ck.set("channelLoaded", true)
     for (let channel of channelList) {
         if (channel.id === id) {
             document.title = `#${channel.name} - Discord Explorer`
@@ -286,6 +305,8 @@ function renderChunk(chunkIndex: number) {
             "currentChannel.data is not available, so chunk loading has been aborted."
         )
 
+    w.ck.set("chunkLoading", true)
+
     currentChunk = chunkIndex
     const chunk: message[] = currentChannel.data[chunkIndex]
 
@@ -302,6 +323,7 @@ function renderChunk(chunkIndex: number) {
     }
     loadedChunks = loadedChunks + 1
 
+    w.ck.set("chunkLoading", false)
     console.log(
         "Finished rendering chunk " +
             chunkIndex +
@@ -375,8 +397,6 @@ function loadSidebar() {
     })
 }
 
-//here
-
 // Lazy loading of message chunks:
 let loadingMessages = false
 let lazyLoadingFailed = false
@@ -425,6 +445,15 @@ function calculateThreshold() {
 /* ============   
     OTHER BITS    
    ============ */
+
+/** Initiates Context Keys as `window.ck`. Called on DOM ready. */
+function initCk() {
+    window.ck = new contextKeys({
+        channelLoaded: false,
+        channelLoading: false,
+        chunkLoading: false,
+    })
+}
 
 /** Check if Mojang or Github is down
  * @returns An array of all the services that are down
@@ -514,9 +543,15 @@ function checkContext() {
 // THINGS TO DO WHEN THE DOM IS READY
 $(() => {
     getChannelList()
+    initCk()
+    w.ck.onChange("chunkLoading", (value) => {
+        debugger
+    })
+    w.ck.onChange("channelLoading", (value) => {
+        console.log("Channel loading:", value)
+    })
 
     cursorsStylesheet = document.querySelector("style#cursors")
-    const a = 1
 
     // Set OG tag:
     $("meta[property='og:title']").prop("content", `Home - Discord Explorer`)

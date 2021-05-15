@@ -178,6 +178,9 @@ const events = {
         // Remove the spinning wheel cursor
         $("body").css("cursor", "")
         cursorsStylesheet.sheet.deleteRule(rule)
+
+        // Switch focus to the chatlog
+        $("#chatlog")[0].focus()
     },
 }
 
@@ -323,44 +326,34 @@ function splitChannelIntoChunks(
     return chunkedMessages
 }
 
-/** Give each message from a chunk to `renderMessage()` */
+/** Create a div for a chunk of messages to go in, then put the messages into the div. */
 function renderChunk(chunkIndex: number) {
     if (!currentChannel.data || !currentChannel.data.length)
         return console.error(
             "currentChannel.data is not available, so chunk loading has been aborted."
         )
 
-    w.ck.set("chunkLoading", true)
-
     const chunk: message[] = currentChannel.data[chunkIndex]
 
-    let chunkDiv = document.createElement("div")
+    const chunkDiv = document.createElement("div")
     chunkDiv.setAttribute("class", "chunk")
     chunkDiv.setAttribute("id", "chunk-" + chunkIndex)
     $("#chatlog").append(chunkDiv)
 
-    let currentMsg
-    for (currentMsg of chunk) {
-        // Parse each message
-        chunkDiv.appendChild(renderMessage(currentMsg, chunkDiv))
-        $("#progress").html("Rendering " + chunk.length + " messages")
-    }
-    loadedChunks = loadedChunks + 1
+    renderMessages(chunk, chunkDiv)
 
-    w.ck.set("chunkLoading", false)
-    console.log(
-        "Finished rendering chunk " +
-            chunkIndex +
-            " (" +
-            chunk.length +
-            " messages)"
-    )
-    $("#progress").hide()
-    $("#chatlog")[0].focus()
+    loadedChunks = loadedChunks + 1
+}
+
+function renderMessages(messages: message[], parentElement: Element) {
+    for (let message of messages) {
+        const messageCard = generateMessageCard(message)
+        parentElement.appendChild(messageCard)
+    }
 }
 
 /** Generate a messageCard element from a Discord message */
-function renderMessage(msg: message, chunkElement: HTMLElement) {
+function generateMessageCard(msg: message) {
     let messageCard = document.createElement("div") // Prepare the new msg card
     messageCard.setAttribute("class", "message-card")
     messageCard.setAttribute("id", "msg-" + msg.id)

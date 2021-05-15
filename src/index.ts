@@ -134,8 +134,6 @@ let currentChannel: { data: any[] | null } = {
     data: null,
 }
 let loadedChunks = 0
-// currentChunk is `null` because no channel is loaded yet:
-let currentChunk: null | number = null
 
 const currentURL = new URL(window.location.href)
 let cursorsStylesheet: HTMLStyleElement | null = null
@@ -334,7 +332,6 @@ function renderChunk(chunkIndex: number) {
 
     w.ck.set("chunkLoading", true)
 
-    currentChunk = chunkIndex
     const chunk: message[] = currentChannel.data[chunkIndex]
 
     let chunkDiv = document.createElement("div")

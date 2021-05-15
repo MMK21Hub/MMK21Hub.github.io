@@ -130,7 +130,9 @@ let featureFlags = {
 /** Shorthand to the `window` object */
 const w = window
 
-let currentChannel: { data?: any[]; id?: string } = {}
+let currentChannel: { data: any[] | null } = {
+    data: null,
+}
 let loadedChunks = 0
 // currentChunk is `null` because no channel is loaded yet:
 let currentChunk: null | number = null
@@ -306,13 +308,17 @@ const renderChannel = async (id: string) => {
     events.afterChannelLoad(id)
 }
 
-function splitChannelIntoChunks(channelData: [], chunkSize = 100) {
+function splitChannelIntoChunks(
+    channelData: { messages: [] },
+    chunkSize = 100
+) {
+    // TODO: Get a proper type for this parameter ^
     let chunkedMessages = []
 
-    let totalChunks = Math.ceil(channelData.length / chunkSize)
+    let totalChunks = Math.ceil(channelData.messages.length / chunkSize)
     for (let i of _.range(totalChunks)) {
         chunkedMessages.push(
-            channelData.slice(i * chunkSize, i * chunkSize + chunkSize)
+            channelData.messages.slice(i * chunkSize, i * chunkSize + chunkSize)
         )
     }
 
@@ -321,7 +327,7 @@ function splitChannelIntoChunks(channelData: [], chunkSize = 100) {
 
 /** Give each message from a chunk to `renderMessage()` */
 function renderChunk(chunkIndex: number) {
-    if (!currentChannel.data)
+    if (!currentChannel.data || !currentChannel.data.length)
         return console.error(
             "currentChannel.data is not available, so chunk loading has been aborted."
         )

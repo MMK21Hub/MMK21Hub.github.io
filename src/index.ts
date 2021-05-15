@@ -35,6 +35,8 @@ import contextKeys from "https://cdn.skypack.dev/pin/context-keys@v3.1.0-p8ds1ae
 import * as Sentry from "https://cdn.skypack.dev/pin/@sentry/browser@v6.3.6-WidkolDfgWFbwsjpgQsM/mode=imports,min/optimized/@sentry/browser.js"
 // @ts-ignore
 import { Integrations } from "https://cdn.skypack.dev/pin/@sentry/tracing@v6.3.6-72C9F2EYsOnu6XdC01yr/mode=imports,min/optimized/@sentry/tracing.js"
+// @ts-ignore
+import * as _ from "https://cdn.skypack.dev/pin/lodash@v4.17.21-K6GEbP02mWFnLA45zAmi/mode=imports,min/optimized/lodash.js"
 
 /* ==================   
     TYPESCRIPT STUFF    
@@ -294,43 +296,27 @@ const renderChannel = async (id: string) => {
     )
     endTimer("get-json")
 
-    // Actually render the channel data:
-    renderContent(channelData.messages)
+    // Split the channel's messages into chunks
+    currentChannel.data = splitChannelIntoChunks(channelData)
+
+    // Render the first chunk of messages:
+    renderChunk(0)
 
     // Fire the `afterChannelLoad` event:
     events.afterChannelLoad(id)
 }
 
-/** Split an array of messages into chunks and give it to `renderChunk()`
- * TODO: The actual chunking probably needs to be split off from the other logic
- */
-const renderContent = async (messages: []) => {
-    let chunkedMessages: any[] = []
+function splitChannelIntoChunks(channelData: [], chunkSize = 100) {
+    let chunkedMessages = []
 
-    if (!(messages.length > 100)) {
-        // Put the whole channel into one chunk if it's not big
-        // TODO: On paper, we shouldn't need this check?
-        currentChannel.data = [messages]
-
-        renderChunk(0) // Render the first chunk
+    let totalChunks = Math.ceil(channelData.length / chunkSize)
+    for (let i of _.range(totalChunks)) {
+        chunkedMessages.push(
+            channelData.slice(i * chunkSize, i * chunkSize + chunkSize)
+        )
     }
 
-    // Split the array into chunks if it's big
-    let chunks = Math.ceil(messages.length / 100)
-    var i
-    for (i = 0; i < chunks; i++) {
-        chunkedMessages.push(messages.slice(i * 100, i * 100 + 100))
-    }
-    console.log(
-        "Split " +
-            messages.length +
-            " messages into " +
-            chunkedMessages.length +
-            " chunks"
-    )
-    currentChannel.data = chunkedMessages
-
-    renderChunk(0) // Render the first chunk
+    return chunkedMessages
 }
 
 /** Give each message from a chunk to `renderMessage()` */

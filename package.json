@@ -5,7 +5,8 @@
   "main": "dist/index.html",
   "scripts": {
     "start": "snowpack dev",
-    "build": "snowpack build"
+    "build": "snowpack build",
+    "cypress": "cypress open"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "@snowpack/plugin-webpack": "^2.3.1",
     "@types/jquery": "^3.5.5",
     "css-loader": "^5.0.1",
+    "cypress": "^7.3.0",
     "sass": "^1.32.5",
     "sass-loader": "^10.1.1",
     "snowpack": "^3.0.13",

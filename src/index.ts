@@ -126,7 +126,7 @@ let featureFlags = {
 }
 
 /** Shorthand to the `window` object */
-let w = window
+const w = window
 
 let currentChannel: { data?: any[]; id?: string } = {}
 let loadedChunks = 0
@@ -135,10 +135,51 @@ let currentChunk: null | number = null
 
 const currentURL = new URL(window.location.href)
 let cursorsStylesheet: HTMLStyleElement | null = null
+let rule: number
 
 const context = checkContext()
 
-let corsEverywhere = "https://rocky-castle-55647.herokuapp.com/"
+const events = {
+    beforeChannelLoad: (id: string) => {
+        // Set the context key:
+        w.ck.set("channelLoading", true)
+
+        // Update the URL:
+        currentURL.searchParams.set("channel", id.toString())
+        history.replaceState(null, "", currentURL.search)
+
+        // Reset the chatlog before rendering the new messages:
+        $("#chatlog").html("").scrollTop(0)
+
+        // Update the curser to a spinning wheel:
+        $("body").css("cursor", "wait")
+        const rule = cursorsStylesheet.sheet.insertRule(`\
+        html body {
+            --cursor-pointer: wait;
+        }
+        `)
+    },
+    afterChannelLoad: (id: string) => {
+        if (!channelList) return console.assert(channelList)
+
+        // Set the context keys:
+        w.ck.set("channelLoading", false)
+        w.ck.set("channelLoaded", true)
+
+        // Update the title
+        for (let channel of channelList) {
+            if (channel.id === id) {
+                document.title = `#${channel.name} - Discord Explorer`
+            }
+        }
+
+        // Remove the spinning wheel cursor
+        $("body").css("cursor", "")
+        cursorsStylesheet.sheet.deleteRule(rule)
+    },
+}
+
+const corsEverywhere = "https://rocky-castle-55647.herokuapp.com/"
 
 /* ===========   
     FUNCTIONS    
@@ -167,6 +208,16 @@ function overrideClick(event: any) {
         event.metaKey || event.shiftKey || event.altKey || event.ctrlKey
     if (hasModifiers || event.button !== 0) return
     event.preventDefault()
+}
+
+function startTimer(name: string) {
+    if (context.prod) return
+    console.time(name)
+}
+
+function endTimer(name: string) {
+    if (context.prod) return
+    console.timeEnd(name)
 }
 
 /* ===================   
@@ -225,49 +276,33 @@ function checkURL() {
 
 /** Get a saved Discord channel and give it to `renderContent()` */
 const renderChannel = async (id: string) => {
+    // Type safety:
     if (!channelList)
         return console.error(
             "The channel list hasn't loaded for some reason; expect bugs."
         )
 
-    w.ck.set("channelLoading", true)
-    currentURL.searchParams.set("channel", id.toString())
-    history.replaceState(null, "", currentURL.search) // Update the URL
-    $("#chatlog") // Reset the chatlog before rendering the new messages
-        .html("")
-        .scrollTop(0)
-    $("body").css("cursor", "wait")
-    const rule = cursorsStylesheet.sheet.insertRule(`\
-        html body {
-            --cursor-pointer: wait;
-        }
-    `)
+    // Fire the `beforeChannelLoad` event:
+    events.beforeChannelLoad(id)
 
-    currentChannel.id = id
-    const startTime = performance.now()
+    // Get the channel data:
+    startTimer("get-json")
     const channelData = await $.getJSON(
         "https://raw.githubusercontent.com/MMK21Hub/discord-channels/master/servers/knowledge-base/current/" +
             id +
             ".json"
     )
-    const duration = performance.now() - startTime
+    endTimer("get-json")
 
-    console.log(`Getting and parsing the JSON took ${Math.round(duration)}ms`)
+    // Actually render the channel data:
     renderContent(channelData.messages)
 
-    w.ck.set("channelLoading", false)
-    w.ck.set("channelLoaded", true)
-    for (let channel of channelList) {
-        if (channel.id === id) {
-            document.title = `#${channel.name} - Discord Explorer`
-        }
-    }
-    $("body").css("cursor", "")
-    cursorsStylesheet.sheet.deleteRule(rule)
+    // Fire the `afterChannelLoad` event:
+    events.afterChannelLoad(id)
 }
 
 /** Split an array of messages into chunks and give it to `renderChunk()`
- * TODO: The actual chunking probably needs to be split off form the other logic
+ * TODO: The actual chunking probably needs to be split off from the other logic
  */
 const renderContent = async (messages: []) => {
     let chunkedMessages: any[] = []
@@ -544,14 +579,10 @@ function checkContext() {
 $(() => {
     getChannelList()
     initCk()
-    w.ck.onChange("chunkLoading", (value) => {
-        debugger
-    })
-    w.ck.onChange("channelLoading", (value) => {
-        console.log("Channel loading:", value)
-    })
 
     cursorsStylesheet = document.querySelector("style#cursors")
+
+    addCustomEventListeners()
 
     // Set OG tag:
     $("meta[property='og:title']").prop("content", `Home - Discord Explorer`)
@@ -578,4 +609,7 @@ if (context.prod) {
         integrations: [new Integrations.BrowserTracing()],
         tracesSampleRate: 1.0,
     })
+}
+function addCustomEventListeners() {
+    document.addEventListener("beforeChannelLoad", (e) => {})
 }

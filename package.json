@@ -5,9 +5,10 @@
   "main": "dist/index.html",
   "scripts": {
     "start": "snowpack dev",
-    "start-and-wait": "snowpack dev --output stream && wait-on http://localhost:8080",
+    "start:stream": "snowpack dev --output stream",
     "build": "snowpack build",
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "wait": "echo Waiting for localhost:8080... && wait-on http://localhost:8080"
   },
   "repository": {
     "type": "git",

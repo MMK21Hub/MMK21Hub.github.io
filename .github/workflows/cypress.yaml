@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Debug
-        run: echo ${{ secrets.CYPRESS_RECORD_KEY }}
+        run: cat /home/runner/.npm/_logs/2021-05-16T07_15_12_374Z-debug.log
     
       - name: Checkout
         uses: actions/checkout@v2

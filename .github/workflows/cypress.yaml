@@ -5,9 +5,6 @@ jobs:
     name: Cypress
     runs-on: ubuntu-20.04
     steps:
-      - name: Debug
-        run: cat /home/runner/.npm/_logs/2021-05-16T07_15_12_374Z-debug.log
-    
       - name: Checkout
         uses: actions/checkout@v2
         
@@ -25,3 +22,6 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           # pass GitHub token to allow accurately detecting a build vs a re-run build
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug
+        run: "curl http://localhost:8080"

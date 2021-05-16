@@ -5,6 +5,7 @@
   "main": "dist/index.html",
   "scripts": {
     "start": "snowpack dev",
+    "start-and-wait": "snowpack dev --output stream && wait-on http://localhost:8080",
     "build": "snowpack build",
     "cypress": "cypress open"
   },
@@ -30,7 +31,8 @@
     "@snowpack/plugin-typescript": "^1.2.1",
     "@types/lodash": "^4.14.169",
     "context-keys": "^3.1.0",
-    "tsc": "^1.20150623.0"
+    "tsc": "^1.20150623.0",
+    "wait-on": "^5.3.0"
   },
   "devDependencies": {
     "@snowpack/plugin-webpack": "^2.3.1",

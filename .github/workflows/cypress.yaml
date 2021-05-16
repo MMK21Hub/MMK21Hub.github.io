@@ -19,6 +19,7 @@ jobs:
         with:
           record: true
           env: CYPRESS_RECORD_KEY=${{ secrets.CYPRESS_RECORD_KEY }},GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          wait-on: "http://localhost:8080"
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}

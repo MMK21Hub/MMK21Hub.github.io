@@ -9,7 +9,7 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Start Dev Server
-        run: npm i && (npm run start:stream&)
+        run: "npm i && (npm run start:stream -- --verbose&)"
 
       - name: Run Cypress
         uses: cypress-io/github-action@v2

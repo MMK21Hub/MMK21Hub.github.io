@@ -1,0 +1,8 @@
+name: Test
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Test
+        run: cat /home/runner/.npm/_logs/2021-05-16T07_15_12_374Z-debug.log

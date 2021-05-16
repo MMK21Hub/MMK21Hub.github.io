@@ -24,4 +24,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Debug
-        run: "curl http://localhost:8080"
+        run: "curl http://localhost:8080 && cat /home/runner/.npm/_logs/*-debug.log"
